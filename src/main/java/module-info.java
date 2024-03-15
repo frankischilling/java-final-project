@@ -5,4 +5,6 @@ module com.example.finalproject {
 
     opens com.example.finalproject to javafx.fxml;
     exports com.example.finalproject;
+    exports com.example.finalproject.classes;
+    opens com.example.finalproject.classes to javafx.fxml;
 }

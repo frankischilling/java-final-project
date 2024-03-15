@@ -16,11 +16,12 @@
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
     </padding>
 
-    <ComboBox fx:id="typeComboBox" onAction="#onTypeSelected">
+    <ComboBox fx:id="typeComboBox" onAction="#onTypeSelected" maxWidth="Infinity">
         <items>
             <FXCollections fx:factory="observableArrayList">
                 <String fx:value="Book"/>
                 <String fx:value="Electronics"/>
+                <String fx:value="Furniture"/>
             </FXCollections>
         </items>
     </ComboBox>
@@ -28,6 +29,8 @@
     <TextField fx:id="quantityField" promptText="Quantity"/>
     <TextField fx:id="priceField" promptText="Price"/>
     <TextField fx:id="extraField" promptText="Extra"/>
+    <TextField fx:id="colorField" promptText="Color"/>
+    <TextField fx:id="modelIdField" promptText="Model ID"/> <!-- New TextField for modelId -->
     <Button text="Add" onAction="#onAddButtonClick"/>
     <ListView fx:id="inventoryListView"/>
 </VBox>
