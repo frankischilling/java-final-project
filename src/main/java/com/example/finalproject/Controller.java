@@ -37,6 +37,7 @@ public class Controller {
         subGroupComboBox.getItems().clear();
         subGroupComboBox.setVisible(false);
         subGroupComboBox.setDisable(true);
+        subGroupComboBox.setEditable(true);
 
         // Enable the text fields
         switch (typeComboBox.getValue()) {
