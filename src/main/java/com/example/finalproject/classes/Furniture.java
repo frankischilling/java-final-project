@@ -1,35 +1,28 @@
-package com.example.finalproject;
+package com.example.finalproject.classes;
+
+import com.example.finalproject.Item;
 
 public class Furniture extends Item {
+    // new field
     private String material;
-    private String color;
-
-    public Furniture(String name, int quantity, double price, String material, String color) {
+    // new constructor parameter
+    public Furniture(String name, int quantity, double price, String material) {
         super(name, quantity, price);
         this.material = material;
-        this.color = color;
     }
-
+    // new getter and setter
     public String getMaterial() {
         return material;
     }
-
+    // new getter and setter
     public void setMaterial(String material) {
         this.material = material;
     }
-
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
-    }
-
+    // override toString
     public String toString() {
-        return super.toString() + ", Material: " + material + ", Color: " + color;
+        return super.toString() + ", Material: " + material;
     }
-
+    // override getType
     @Override
     public String getType() {
         return "Furniture";

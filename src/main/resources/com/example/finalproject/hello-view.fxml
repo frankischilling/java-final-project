@@ -30,7 +30,8 @@
     <TextField fx:id="priceField" promptText="Price"/>
     <TextField fx:id="extraField" promptText="Extra"/>
     <TextField fx:id="colorField" promptText="Color"/>
-    <TextField fx:id="modelIdField" promptText="Model ID"/> <!-- New TextField for modelId -->
+    <TextField fx:id="modelIdField" promptText="Model ID"/>
+    <Button text="Remove" onAction="#onRemoveButtonClick"/>
     <Button text="Add" onAction="#onAddButtonClick"/>
     <ListView fx:id="inventoryListView"/>
 </VBox>
