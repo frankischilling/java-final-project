@@ -16,10 +16,7 @@
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
     </padding>
 
-    <TextField fx:id="nameField" promptText="Name"/>
-    <TextField fx:id="quantityField" promptText="Quantity"/>
-    <TextField fx:id="priceField" promptText="Price"/>
-    <ComboBox fx:id="typeComboBox">
+    <ComboBox fx:id="typeComboBox" onAction="#onTypeSelected">
         <items>
             <FXCollections fx:factory="observableArrayList">
                 <String fx:value="Book"/>
@@ -27,6 +24,9 @@
             </FXCollections>
         </items>
     </ComboBox>
+    <TextField fx:id="nameField" promptText="Name"/>
+    <TextField fx:id="quantityField" promptText="Quantity"/>
+    <TextField fx:id="priceField" promptText="Price"/>
     <TextField fx:id="extraField" promptText="Extra"/>
     <Button text="Add" onAction="#onAddButtonClick"/>
     <ListView fx:id="inventoryListView"/>
