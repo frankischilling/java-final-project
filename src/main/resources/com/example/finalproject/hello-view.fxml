@@ -25,13 +25,14 @@
             </FXCollections>
         </items>
     </ComboBox>
+    <ComboBox fx:id="subGroupComboBox" maxWidth="Infinity"/>
     <TextField fx:id="nameField" promptText="Name"/>
     <TextField fx:id="quantityField" promptText="Quantity"/>
     <TextField fx:id="priceField" promptText="Price"/>
     <TextField fx:id="extraField" promptText="Extra"/>
     <TextField fx:id="colorField" promptText="Color"/>
     <TextField fx:id="modelIdField" promptText="Model ID"/>
-    <Button text="Remove" onAction="#onRemoveButtonClick"/>
     <Button text="Add" onAction="#onAddButtonClick"/>
+    <Button text="Remove" onAction="#onRemoveButtonClick"/>
     <ListView fx:id="inventoryListView"/>
 </VBox>

@@ -21,6 +21,9 @@ public class Controller {
     // Add the @FXML annotation to the modelIdField field
     @FXML
     private TextField modelIdField;
+    // Add the @FXML annotation to the subGroupComboBox field
+    @FXML
+    private ComboBox<String> subGroupComboBox;
     // Add the @FXML annotation to the addButton field
     @FXML
     protected void onTypeSelected() {
@@ -31,35 +34,52 @@ public class Controller {
         extraField.clear();
         colorField.clear();
         modelIdField.clear();
+        subGroupComboBox.getItems().clear();
+        subGroupComboBox.setVisible(false);
+        subGroupComboBox.setDisable(true);
+
         // Enable the text fields
         switch (typeComboBox.getValue()) {
-            // Enable the extraField and disable the colorField and modelIdField
+            // Enable the extraField and disable the colorField, modelIdField and subGroupComboBox
             case "Book":
                 extraField.setPromptText("Author");
+                extraField.setDisable(false);
                 colorField.setPromptText("");
                 colorField.setDisable(true);
                 modelIdField.setPromptText("");
                 modelIdField.setDisable(true);
+                subGroupComboBox.setVisible(true);
+                subGroupComboBox.setDisable(false);
+                subGroupComboBox.getItems().addAll("Non-fiction", "Fiction");
                 break;
-            // Enable the extraField, colorField, and modelIdField
+            // Enable the extraField, colorField, modelIdField and subGroupComboBox
             case "Electronics":
                 extraField.setPromptText("Brand");
+                extraField.setDisable(false);
                 colorField.setPromptText("Color");
                 colorField.setDisable(false);
                 modelIdField.setPromptText("Model ID");
                 modelIdField.setDisable(false);
+                subGroupComboBox.setVisible(true);
+                subGroupComboBox.setDisable(false);
+                subGroupComboBox.getItems().addAll("TV", "Laptop", "Phone");
                 break;
-            // Enable the extraField and disable the colorField and modelIdField
+            // Enable the colorField and disable the extraField, modelIdField and subGroupComboBox
             case "Furniture":
                 extraField.setPromptText("Material");
-                colorField.setPromptText("Color");
-                colorField.setDisable(false);
+                extraField.setDisable(false);
+                colorField.setPromptText("");
+                colorField.setDisable(true);
                 modelIdField.setPromptText("");
                 modelIdField.setDisable(true);
+                subGroupComboBox.setVisible(true);
+                subGroupComboBox.setDisable(false);
+                subGroupComboBox.getItems().addAll("Chair", "Table", "Desk", "Bed", "Sofa");
                 break;
-                // Disable the extraField, colorField, and modelIdField
+            // Disable the extraField, colorField, modelIdField and subGroupComboBox
             default:
                 extraField.setPromptText("Extra");
+                extraField.setDisable(true);
                 colorField.setPromptText("");
                 colorField.setDisable(true);
                 modelIdField.setPromptText("");
@@ -94,9 +114,6 @@ public class Controller {
 
             Item item;
             switch (type) {
-                case "Book":
-                    item = new Book(name, quantity, price, extra);
-                    break;
                 case "Electronics":
                     String color = colorField.getText();
                     if (color.isEmpty()) {
@@ -104,15 +121,21 @@ public class Controller {
                         return;
                     }
                     String modelId = modelIdField.getText();
-                    item = new Electronics(name, quantity, price, extra, modelId);
+                    String subGroup = subGroupComboBox.getValue();
+                    item = new Electronics(name, quantity, price, extra, modelId, subGroup);
+                    break;
+                case "Book":
+                    subGroup = subGroupComboBox.getValue();
+                    item = new Book(name, quantity, price, extra, subGroup);
                     break;
                 case "Furniture":
-                    color = colorField.getText();
-                    if (color.isEmpty()) {
-                        showAlert("Color field is empty. Please enter a color.");
+                    String material = extraField.getText();
+                    if (material.isEmpty()) {
+                        showAlert("Material field is empty. Please enter a material.");
                         return;
                     }
-                    item = new Furniture(name, quantity, price, extra);
+                    subGroup = subGroupComboBox.getValue();
+                    item = new Furniture(name, quantity, price, material, subGroup);
                     break;
                 default:
                     return;

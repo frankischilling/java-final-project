@@ -7,11 +7,15 @@ public class Electronics extends Item {
     private String brand;
     // new field
     private String modelId;
+    // new field
+    private String subGroup;
+
     // new constructor parameter
-    public Electronics(String name, int quantity, double price, String brand, String modelId) {
+    public Electronics(String name, int quantity, double price, String brand, String modelId, String subGroup) {
         super(name, quantity, price);
         this.brand = brand;
-        this.modelId = modelId; // initialize the new field
+        this.modelId = modelId;
+        this.subGroup = subGroup;
     }
     // new getter and setter
     public String getBrand() {
@@ -22,17 +26,27 @@ public class Electronics extends Item {
         this.brand = brand;
     }
     // new getter and setter
-    public String getModelId() { // getter for the new field
+    public String getModelId() {
         return modelId;
     }
     // new getter and setter
-    public void setModelId(String modelId) { // setter for the new field
+    public void setModelId(String modelId) {
         this.modelId = modelId;
     }
     // override toString
+    @Override
     public String toString() {
-        return super.toString() + ", Brand: " + brand + ", Model ID: " + modelId; // include the new field
+        return super.toString() + ", Brand: " + brand + ", Model ID: " + modelId;
     }
+    // new getter and setter
+    public String getSubGroup() {
+        return subGroup;
+    }
+    // new getter and setter
+    public void setSubGroup(String subGroup) {
+        this.subGroup = subGroup;
+    }
+
     // override getType
     @Override
     public String getType() {
