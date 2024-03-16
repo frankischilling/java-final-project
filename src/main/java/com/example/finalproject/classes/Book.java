@@ -2,6 +2,7 @@ package com.example.finalproject.classes;
 
 import com.example.finalproject.Item;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Book extends Item {
     private String author;
@@ -33,7 +34,8 @@ public class Book extends Item {
 
     @Override
     public String toString() {
-        return super.toString() + ", Author: " + author + ", Sub Group: " + subGroup;
+        int totalPages = pages.size();
+        return super.toString() + ", Author: " + author + ", Sub Group: " + subGroup + ", Pages: " + totalPages;
     }
 
     @Override
