@@ -32,6 +32,7 @@
     <TextField fx:id="nameField" promptText="Name"/>
     <TextField fx:id="quantityField" promptText="Quantity"/>
     <TextField fx:id="priceField" promptText="Price"/>
+    <TextField fx:id="pagesField" promptText="Number of Pages" />
     <TextField fx:id="extraField" promptText="Extra"/>
     <TextField fx:id="colorField" promptText="Color"/>
     <TextField fx:id="modelIdField" promptText="Model ID"/>
