@@ -61,6 +61,5 @@ public abstract class Item {
         Item item = (Item) obj;
         return id.equals(item.id) && name.equals(item.name) && quantity == item.quantity && price == item.price;
     }
-    // override hashCode
     public abstract String getType();
 }

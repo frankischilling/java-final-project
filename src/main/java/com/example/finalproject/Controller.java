@@ -68,7 +68,7 @@ public class Controller {
                 extraField.setPromptText("Brand");
                 extraField.setDisable(false);
                 colorField.setPromptText("Color");
-                colorField.setDisable(false);
+                colorField.setVisible(true);
                 modelIdField.setPromptText("Model ID");
                 modelIdField.setDisable(false);
                 pagesField.setVisible(false);
@@ -141,7 +141,7 @@ public class Controller {
                     }
                     String modelId = modelIdField.getText();
                     String subGroup = subGroupComboBox.getValue();
-                    item = new Electronics(name, quantity, price, extra, modelId, subGroup);
+                    item = new Electronics(name, quantity, price, extra, modelId, subGroup, color);
                     break;
                 case "Book":
                     subGroup = subGroupComboBox.getValue();

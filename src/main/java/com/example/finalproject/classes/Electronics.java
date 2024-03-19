@@ -9,13 +9,16 @@ public class Electronics extends Item {
     private String modelId;
     // new field
     private String subGroup;
+    // new field
+    private String color;
 
     // new constructor parameter
-    public Electronics(String name, int quantity, double price, String brand, String modelId, String subGroup) {
+    public Electronics(String name, int quantity, double price, String brand, String modelId, String subGroup, String color) {
         super(name, quantity, price);
         this.brand = brand;
         this.modelId = modelId;
         this.subGroup = subGroup;
+        this.color = color;
     }
     // new getter and setter
     public String getBrand() {
@@ -33,11 +36,6 @@ public class Electronics extends Item {
     public void setModelId(String modelId) {
         this.modelId = modelId;
     }
-    // override toString
-    @Override
-    public String toString() {
-        return super.toString() + ", Brand: " + brand + ", Model ID: " + modelId;
-    }
     // new getter and setter
     public String getSubGroup() {
         return subGroup;
@@ -47,9 +45,24 @@ public class Electronics extends Item {
         this.subGroup = subGroup;
     }
 
+    // new getter and setter
+    public String getColor() {
+        return color;
+    }
+
+    // new getter and setter
+    public void setColor(String color) {
+        this.color = color;
+    }
+
     // override getType
     @Override
     public String getType() {
         return "Electronics";
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + ", Brand: " + brand + ", Model ID: " + modelId + ", Sub Group: " + subGroup + ", Color: " + color; // include color in toString
     }
 }
