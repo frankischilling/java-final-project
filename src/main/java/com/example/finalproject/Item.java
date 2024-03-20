@@ -7,6 +7,9 @@ public abstract class Item {
     private String name;
     private int quantity;
     private double price;
+
+    private String description;
+
     // new constructor parameter
     public Item(String name, int quantity, double price) {
         this.id = "ITEM" + nextId++;
@@ -46,10 +49,6 @@ public abstract class Item {
     public void setPrice(double price) {
         this.price = price;
     }
-    // override toString
-    public String toString() {
-        return "ID: " + id + ", Item: " + name + ", Quantity: " + quantity + ", Price: " + price;
-    }
     // override equals
     public boolean equals(Object obj) {
         if (obj == this) {
@@ -61,5 +60,28 @@ public abstract class Item {
         Item item = (Item) obj;
         return id.equals(item.id) && name.equals(item.name) && quantity == item.quantity && price == item.price;
     }
+
+    public void setDescription(String description) {
+        if (description == null || description.isEmpty()) {
+            throw new IllegalArgumentException("Description cannot be null or empty.");
+        }
+        this.description = description;
+    }
+    public String getDescription() {
+        return description;
+    }
+
+    public double discountPrice(double discountRate) {
+        if (discountRate < 0 || discountRate > 1) {
+            throw new IllegalArgumentException("Discount rate must be between 0 and 1.");
+        }
+        return price * (1 - discountRate);
+    }
+
+    @Override
+    public String toString() {
+        return "ID: " + id + ", Item: " + name + ", Quantity: " + quantity + ", Price: " + price + ", Description: " + description;
+    }
+
     public abstract String getType();
 }

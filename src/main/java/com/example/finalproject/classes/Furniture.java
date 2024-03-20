@@ -7,6 +7,9 @@ public class Furniture extends Item {
     private String material;
     // new field
     private String subGroup;
+
+    private String dimensions;
+
     // new constructor parameter
     public Furniture(String name, int quantity, double price, String material, String subGroup) {
         super(name, quantity, price);
@@ -29,10 +32,21 @@ public class Furniture extends Item {
     public void setSubGroup(String subGroup) {
         this.subGroup = subGroup;
     }
-    // override toString
+
+    public void setDimensions(String dimensions) {
+        if (dimensions == null || dimensions.isEmpty()) {
+            throw new IllegalArgumentException("Dimensions cannot be null or empty.");
+        }
+        this.dimensions = dimensions;
+    }
+
+    public String getDimensions() {
+        return dimensions;
+    }
+
     @Override
     public String toString() {
-        return super.toString() + ", Material: " + material + ", Sub Group: " + subGroup; // include the new field
+        return super.toString() + ", Material: " + material + ", Sub Group: " + subGroup + ", Dimensions: " + dimensions;
     }
     // override getType
     @Override

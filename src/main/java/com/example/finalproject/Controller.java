@@ -29,6 +29,8 @@ public class Controller {
     // Add the @FXML annotation to the pagesField field
     @FXML
     private TextField pagesField;
+    @FXML
+    private TextField descriptionField, publisherField, warrantyPeriodField, dimensionsField;
     // Add the @FXML annotation to the addButton field
     @FXML
     protected void onTypeSelected() {
@@ -43,10 +45,14 @@ public class Controller {
         subGroupComboBox.setVisible(false);
         subGroupComboBox.setDisable(true);
         subGroupComboBox.setEditable(true);
+        descriptionField.clear();
+        publisherField.clear();
+        warrantyPeriodField.clear();
+        dimensionsField.clear();
 
         // Enable the text fields
         switch (typeComboBox.getValue()) {
-            // Enable the extraField and disable the colorField, modelIdField and subGroupComboBox
+            // Enable the extraField and subGroupComboBox
             case "Book":
                 extraField.setPromptText("Author");
                 extraField.setManaged(true);
@@ -62,6 +68,14 @@ public class Controller {
                 pagesField.setManaged(true);
                 pagesField.setVisible(true);
                 pagesField.setPromptText("Number of pages");
+                descriptionField.setManaged(true);
+                descriptionField.setVisible(true);
+                publisherField.setManaged(true);
+                publisherField.setVisible(true);
+                warrantyPeriodField.setManaged(false);
+                warrantyPeriodField.setVisible(false);
+                dimensionsField.setManaged(false);
+                dimensionsField.setVisible(false);
                 break;
             // Enable the extraField, colorField, modelIdField and subGroupComboBox
             case "Electronics":
@@ -77,8 +91,16 @@ public class Controller {
                 subGroupComboBox.setVisible(true);
                 subGroupComboBox.setDisable(false);
                 subGroupComboBox.getItems().addAll("TV", "Laptop", "Phone");
+                descriptionField.setManaged(true);
+                descriptionField.setVisible(true);
+                publisherField.setManaged(false);
+                publisherField.setVisible(false);
+                warrantyPeriodField.setManaged(true);
+                warrantyPeriodField.setVisible(true);
+                dimensionsField.setManaged(false);
+                dimensionsField.setVisible(false);
                 break;
-            // Enable the colorField and disable the extraField, modelIdField and subGroupComboBox
+            // Enable the extraField, colorField and subGroupComboBox
             case "Furniture":
                 extraField.setPromptText("Material");
                 extraField.setDisable(false);
@@ -94,8 +116,16 @@ public class Controller {
                 subGroupComboBox.setVisible(true);
                 subGroupComboBox.setDisable(false);
                 subGroupComboBox.getItems().addAll("Chair", "Table", "Desk", "Bed", "Sofa");
+                descriptionField.setManaged(true);
+                descriptionField.setVisible(true);
+                publisherField.setManaged(false);
+                publisherField.setVisible(false);
+                warrantyPeriodField.setManaged(false);
+                warrantyPeriodField.setVisible(false);
+                dimensionsField.setManaged(true);
+                dimensionsField.setVisible(true);
                 break;
-            // Disable the extraField, colorField, modelIdField and subGroupComboBox
+            // Disable all the text fields
             default:
                 extraField.setPromptText("Extra");
                 extraField.setDisable(true);
@@ -103,6 +133,14 @@ public class Controller {
                 colorField.setDisable(true);
                 modelIdField.setPromptText("");
                 modelIdField.setDisable(true);
+                descriptionField.setManaged(false);
+                descriptionField.setVisible(false);
+                publisherField.setManaged(false);
+                publisherField.setVisible(false);
+                warrantyPeriodField.setManaged(false);
+                warrantyPeriodField.setVisible(false);
+                dimensionsField.setManaged(false);
+                dimensionsField.setVisible(false);
                 break;
         }
     }
@@ -110,17 +148,29 @@ public class Controller {
     @FXML
     protected void onAddButtonClick() {
         try {
+            String description = descriptionField.getText();
             String name = nameField.getText();
-            if (name.isEmpty()) {
+            if (name == null || name.isEmpty()) {
                 showAlert("Name field is empty. Please enter a name.");
                 return;
             }
 
-            int quantity = Integer.parseInt(quantityField.getText());
-            double price = Double.parseDouble(priceField.getText());
+            String quantityText = quantityField.getText();
+            if (quantityText == null || !quantityText.matches("\\d+")) {
+                showAlert("Invalid quantity. Please enter a positive integer.");
+                return;
+            }
+            int quantity = Integer.parseInt(quantityText);
+
+            String priceText = priceField.getText();
+            if (priceText == null || !priceText.matches("\\d*(\\.\\d+)?")) {
+                showAlert("Invalid price. Please enter a non-negative number.");
+                return;
+            }
+            double price = Double.parseDouble(priceText);
 
             String extra = extraField.getText();
-            if (extra.isEmpty()) {
+            if (extra == null || extra.isEmpty()) {
                 showAlert("Extra field is empty. Please enter a value.");
                 return;
             }
@@ -130,7 +180,6 @@ public class Controller {
                 showAlert("No item type selected. Please select a type.");
                 return;
             }
-
             Item item;
             switch (type) {
                 case "Electronics":
@@ -141,7 +190,17 @@ public class Controller {
                     }
                     String modelId = modelIdField.getText();
                     String subGroup = subGroupComboBox.getValue();
+
+                    String warrantyPeriodText = warrantyPeriodField.getText();
+                    if (warrantyPeriodText == null || !warrantyPeriodText.matches("\\d+")) {
+                        showAlert("Invalid warranty period. Please enter a positive integer.");
+                        return;
+                    }
+                    int warrantyPeriod = Integer.parseInt(warrantyPeriodText);
+
                     item = new Electronics(name, quantity, price, extra, modelId, subGroup, color);
+                    item.setDescription(description);
+                    ((Electronics) item).setWarrantyPeriod(warrantyPeriod);
                     break;
                 case "Book":
                     subGroup = subGroupComboBox.getValue();
@@ -150,7 +209,15 @@ public class Controller {
                     for (int i = 0; i < numberOfPages; i++) {
                         pages.add(new Page(i + 1, "")); // You can replace "" with the actual content of the page
                     }
+                    String publisher = publisherField.getText();
+                    if (publisher == null || publisher.isEmpty()) {
+                        showAlert("Publisher field is empty. Please enter a publisher.");
+                        return;
+                    }
+
                     item = new Book(name, quantity, price, extra, subGroup, pages);
+                    item.setDescription(description);
+                    ((Book) item).setPublisher(publisher);
                     pagesField.setVisible(true);
                     break;
                 case "Furniture":
@@ -160,16 +227,26 @@ public class Controller {
                         return;
                     }
                     subGroup = subGroupComboBox.getValue();
+
+                    String dimensions = dimensionsField.getText();
+                    if (dimensions == null || dimensions.isEmpty()) {
+                        showAlert("Dimensions field is empty. Please enter dimensions.");
+                        return;
+                    }
+
                     item = new Furniture(name, quantity, price, material, subGroup);
-                    break;
+                    item.setDescription(description);
+                    ((Furniture) item).setDimensions(dimensions);                    break;
                 default:
                     pagesField.setVisible(false);
                     return;
             }
 
-            inventoryListView.getItems().add(item);
+            if (item != null) { // Add the item to the list view
+                inventoryListView.getItems().add(item);
+            }
         } catch (NumberFormatException e) {
-            showAlert("Invalid input. Please enter a valid number for quantity and price.");
+            showAlert("An error occurred: " + e.getMessage());
         }
     }
     // Add the @FXML annotation to the onRemoveButtonClick method

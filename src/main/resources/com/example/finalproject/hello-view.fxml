@@ -36,6 +36,10 @@
     <TextField fx:id="extraField" promptText="Extra"/>
     <TextField fx:id="colorField" promptText="Color"/>
     <TextField fx:id="modelIdField" promptText="Model ID"/>
+    <TextField fx:id="descriptionField" promptText="Description"/>
+    <TextField fx:id="publisherField" promptText="Publisher"/>
+    <TextField fx:id="warrantyPeriodField" promptText="Warranty Period"/>
+    <TextField fx:id="dimensionsField" promptText="Dimensions"/>
     <HBox spacing="10.0">
         <Button text="Add" onAction="#onAddButtonClick"/>
         <Button text="Remove" onAction="#onRemoveButtonClick"/>
