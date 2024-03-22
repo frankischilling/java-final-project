@@ -43,6 +43,7 @@
     <HBox spacing="10.0">
         <Button text="Add" onAction="#onAddButtonClick"/>
         <Button text="Remove" onAction="#onRemoveButtonClick"/>
+        <Button text="Save" onAction="#onSaveButtonClick"/>
     </HBox>
-    <ListView fx:id="inventoryListView"/>
+    <ListView fx:id="inventoryListView" onMouseClicked="#onItemSelected"/>
 </VBox>

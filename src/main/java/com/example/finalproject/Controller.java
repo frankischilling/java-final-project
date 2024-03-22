@@ -32,6 +32,24 @@ public class Controller {
     @FXML
     private TextField descriptionField, publisherField, warrantyPeriodField, dimensionsField;
     // Add the @FXML annotation to the addButton field
+
+    private void clearFields() {
+        nameField.clear();
+        quantityField.clear();
+        priceField.clear();
+        extraField.clear();
+        colorField.clear();
+        modelIdField.clear();
+        subGroupComboBox.getItems().clear();
+        subGroupComboBox.setVisible(false);
+        subGroupComboBox.setDisable(true);
+        subGroupComboBox.setEditable(true);
+        descriptionField.clear();
+        publisherField.clear();
+        warrantyPeriodField.clear();
+        dimensionsField.clear();
+    }
+
     @FXML
     protected void onTypeSelected() {
         // Clear the text fields
@@ -201,6 +219,7 @@ public class Controller {
                     item = new Electronics(name, quantity, price, extra, modelId, subGroup, color);
                     item.setDescription(description);
                     ((Electronics) item).setWarrantyPeriod(warrantyPeriod);
+                    clearFields();
                     break;
                 case "Book":
                     subGroup = subGroupComboBox.getValue();
@@ -219,6 +238,7 @@ public class Controller {
                     item.setDescription(description);
                     ((Book) item).setPublisher(publisher);
                     pagesField.setVisible(true);
+                    clearFields();
                     break;
                 case "Furniture":
                     String material = extraField.getText();
@@ -236,7 +256,9 @@ public class Controller {
 
                     item = new Furniture(name, quantity, price, material, subGroup);
                     item.setDescription(description);
-                    ((Furniture) item).setDimensions(dimensions);                    break;
+                    ((Furniture) item).setDimensions(dimensions);
+                    clearFields();
+                    break;
                 default:
                     pagesField.setVisible(false);
                     return;
@@ -244,7 +266,7 @@ public class Controller {
 
             if (item != null) { // Add the item to the list view
                 inventoryListView.getItems().add(item);
-            }
+            };
         } catch (NumberFormatException e) {
             showAlert("An error occurred: " + e.getMessage());
         }
@@ -269,4 +291,69 @@ public class Controller {
         alert.showAndWait();
     }
 
+    @FXML
+    private void onItemSelected() {
+        Item selectedItem = inventoryListView.getSelectionModel().getSelectedItem();
+        if (selectedItem != null) {
+            nameField.setText(selectedItem.getName());
+            quantityField.setText(String.valueOf(selectedItem.getQuantity()));
+            priceField.setText(String.valueOf(selectedItem.getPrice()));
+            descriptionField.setText(selectedItem.getDescription());
+
+            if (selectedItem instanceof Book) {
+                Book book = (Book) selectedItem;
+                extraField.setText(book.getAuthor());
+                subGroupComboBox.setValue(book.getSubGroup());
+                pagesField.setText(String.valueOf(book.getPages().size()));
+                publisherField.setText(book.getPublisher());
+            } else if (selectedItem instanceof Electronics) {
+                Electronics electronics = (Electronics) selectedItem;
+                extraField.setText(electronics.getBrand());
+                colorField.setText(electronics.getColor());
+                modelIdField.setText(electronics.getModelId());
+                subGroupComboBox.setValue(electronics.getSubGroup());
+                warrantyPeriodField.setText(String.valueOf(electronics.getWarrantyPeriod()));
+            } else if (selectedItem instanceof Furniture) {
+                Furniture furniture = (Furniture) selectedItem;
+                extraField.setText(furniture.getMaterial());
+                subGroupComboBox.setValue(furniture.getSubGroup());
+                dimensionsField.setText(furniture.getDimensions());
+            }
+        }
+    }
+
+    @FXML
+    protected void onSaveButtonClick() {
+        Item selectedItem = inventoryListView.getSelectionModel().getSelectedItem();
+        if (selectedItem != null) {
+            selectedItem.setName(nameField.getText());
+            selectedItem.setQuantity(Integer.parseInt(quantityField.getText()));
+            selectedItem.setPrice(Double.parseDouble(priceField.getText()));
+            selectedItem.setDescription(descriptionField.getText());
+
+            if (selectedItem instanceof Book) {
+                Book book = (Book) selectedItem;
+                book.setAuthor(extraField.getText());
+                book.setSubGroup(subGroupComboBox.getValue());
+                clearFields();
+                // Update the pages and publisher as needed
+            } else if (selectedItem instanceof Electronics) {
+                Electronics electronics = (Electronics) selectedItem;
+                electronics.setBrand(extraField.getText());
+                electronics.setColor(colorField.getText());
+                electronics.setModelId(modelIdField.getText());
+                electronics.setSubGroup(subGroupComboBox.getValue());
+                electronics.setWarrantyPeriod(Integer.parseInt(warrantyPeriodField.getText()));
+                clearFields();
+            } else if (selectedItem instanceof Furniture) {
+                Furniture furniture = (Furniture) selectedItem;
+                furniture.setMaterial(extraField.getText());
+                furniture.setSubGroup(subGroupComboBox.getValue());
+                furniture.setDimensions(dimensionsField.getText());
+                clearFields();
+            }
+
+            inventoryListView.refresh(); // Refresh the ListView to show the updated details
+        }
+    }
 }

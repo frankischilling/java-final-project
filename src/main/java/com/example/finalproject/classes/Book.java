@@ -56,4 +56,8 @@ public class Book extends Item {
     public String toString() {
         return super.toString() + ", Author: " + author + ", Publisher: " + publisher + ", Sub Group: " + subGroup + ", Pages: " + pages.size();
     }
+
+    public List<Page> getPages() {
+        return pages;
+    }
 }
