@@ -5,6 +5,8 @@ import com.example.finalproject.classes.Book;
 import com.example.finalproject.classes.Electronics;
 import com.example.finalproject.classes.Furniture;
 
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import java.util.ArrayList;
@@ -276,14 +278,22 @@ public class Controller {
     protected void onRemoveButtonClick() {
         Item selectedItem = inventoryListView.getSelectionModel().getSelectedItem();
         if (selectedItem != null) {
-            inventoryListView.getItems().remove(selectedItem);
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation Dialog");
+            alert.setHeaderText(null);
+            alert.setContentText("Are you sure you want to remove this item?");
+
+            alert.showAndWait().ifPresent(response -> {
+                if (response == ButtonType.OK) {
+                    inventoryListView.getItems().remove(selectedItem);
+                }
+            });
         } else {
             showAlert("No item selected. Please select an item to remove.");
         }
     }
     // Add the @FXML annotation to the onRemoveButtonClick method
     private void showAlert(String message) {
-        // Create an alert
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Input Error");
         alert.setHeaderText(null);
