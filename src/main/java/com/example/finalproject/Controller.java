@@ -5,6 +5,8 @@ import com.example.finalproject.classes.Book;
 import com.example.finalproject.classes.Electronics;
 import com.example.finalproject.classes.Furniture;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.fxml.FXML;
@@ -504,5 +506,19 @@ public class Controller {
             inventoryListView.refresh(); // Refresh the ListView to show the updated details
             clearFields(); // Clear the fields after saving the changes
         }
+    }
+
+    @FXML
+    public void initialize() {
+        // Add a listener to the subGroupComboBox's editor property
+        subGroupComboBox.getEditor().textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                // If the new value contains a digit or a negative sign, clear the input
+                if (newValue.matches(".*\\d+.*") || newValue.contains("-")) {
+                    subGroupComboBox.getEditor().setText("");
+                }
+            }
+        });
     }
 }
