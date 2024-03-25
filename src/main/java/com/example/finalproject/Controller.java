@@ -42,14 +42,28 @@ public class Controller {
         extraField.clear();
         colorField.clear();
         modelIdField.clear();
-        subGroupComboBox.getItems().clear();
-        subGroupComboBox.setVisible(false);
-        subGroupComboBox.setDisable(true);
-        subGroupComboBox.setEditable(true);
         descriptionField.clear();
         publisherField.clear();
         warrantyPeriodField.clear();
         dimensionsField.clear();
+
+        if (!"Book".equals(typeComboBox.getValue())) {
+            subGroupComboBox.getItems().clear();
+            subGroupComboBox.setValue("");
+            pagesField.clear();
+        }
+
+        if (!"Electronics".equals(typeComboBox.getValue()) && !"Furniture".equals(typeComboBox.getValue())) {
+            subGroupComboBox.getItems().clear();
+        }
+
+        if (!"Furniture".equals(typeComboBox.getValue())) {
+            subGroupComboBox.getItems().clear();
+            colorField.clear();
+            modelIdField.clear();
+            warrantyPeriodField.clear();
+            dimensionsField.clear();
+        }
     }
 
     @FXML
@@ -61,14 +75,16 @@ public class Controller {
         extraField.clear();
         colorField.clear();
         modelIdField.clear();
-        subGroupComboBox.getItems().clear();
-        subGroupComboBox.setVisible(false);
-        subGroupComboBox.setDisable(true);
-        subGroupComboBox.setEditable(true);
         descriptionField.clear();
         publisherField.clear();
         warrantyPeriodField.clear();
         dimensionsField.clear();
+        subGroupComboBox.getItems().clear();
+        subGroupComboBox.setValue(null);
+        subGroupComboBox.setVisible(false);
+        subGroupComboBox.setDisable(true);
+        subGroupComboBox.setEditable(true);
+        inventoryListView.getSelectionModel().clearSelection();
 
         // Enable the text fields
         switch (typeComboBox.getValue()) {
@@ -96,6 +112,8 @@ public class Controller {
                 warrantyPeriodField.setVisible(false);
                 dimensionsField.setManaged(false);
                 dimensionsField.setVisible(false);
+
+
                 break;
             // Enable the extraField, colorField, modelIdField and subGroupComboBox
             case "Electronics":
@@ -103,8 +121,10 @@ public class Controller {
                 extraField.setDisable(false);
                 colorField.setPromptText("Color");
                 colorField.setVisible(true);
+                colorField.setManaged(true);
                 modelIdField.setPromptText("Model ID");
-                modelIdField.setDisable(false);
+                modelIdField.setVisible(true);
+                modelIdField.setManaged(true);
                 pagesField.setVisible(false);
                 pagesField.setManaged(false);
                 pagesField.setPromptText("");
@@ -161,6 +181,8 @@ public class Controller {
                 warrantyPeriodField.setVisible(false);
                 dimensionsField.setManaged(false);
                 dimensionsField.setVisible(false);
+                subGroupComboBox.getItems().clear();
+
                 break;
         }
     }
@@ -209,7 +231,15 @@ public class Controller {
                         return;
                     }
                     String modelId = modelIdField.getText();
+                    if (modelId.isEmpty()) {
+                        showAlert("Model ID field is empty. Please enter a Model ID.");
+                        return;
+                    }
                     String subGroup = subGroupComboBox.getValue();
+                    if (subGroup == null || subGroup.isEmpty()) {
+                        showAlert("Sub Group field is empty. Please select a Sub Group.");
+                        return;
+                    }
 
                     String warrantyPeriodText = warrantyPeriodField.getText();
                     if (warrantyPeriodText == null || !warrantyPeriodText.matches("\\d+")) {
@@ -225,8 +255,16 @@ public class Controller {
                     break;
                 case "Book":
                     subGroup = subGroupComboBox.getValue();
+                    if (subGroup == null || subGroup.isEmpty()) {
+                        showAlert("Sub Group field is empty. Please select a Sub Group.");
+                        return;
+                    }
                     List<Page> pages = new ArrayList<Page>();
                     int numberOfPages = Integer.parseInt(pagesField.getText());
+                    if (numberOfPages <= 0) {
+                        showAlert("Invalid number of pages. Please enter a positive integer.");
+                        return;
+                    }
                     for (int i = 0; i < numberOfPages; i++) {
                         pages.add(new Page(i + 1, "")); // You can replace "" with the actual content of the page
                     }
@@ -240,6 +278,7 @@ public class Controller {
                     item.setDescription(description);
                     ((Book) item).setPublisher(publisher);
                     pagesField.setVisible(true);
+                    pagesField.setText("");
                     clearFields();
                     break;
                 case "Furniture":
@@ -249,6 +288,10 @@ public class Controller {
                         return;
                     }
                     subGroup = subGroupComboBox.getValue();
+                    if (subGroup == null || subGroup.isEmpty()) {
+                        showAlert("Sub Group field is empty. Please select a Sub Group.");
+                        return;
+                    }
 
                     String dimensions = dimensionsField.getText();
                     if (dimensions == null || dimensions.isEmpty()) {
@@ -316,6 +359,7 @@ public class Controller {
                 subGroupComboBox.setValue(book.getSubGroup());
                 pagesField.setText(String.valueOf(book.getPages().size()));
                 publisherField.setText(book.getPublisher());
+                typeComboBox.setValue("Book");
             } else if (selectedItem instanceof Electronics) {
                 Electronics electronics = (Electronics) selectedItem;
                 extraField.setText(electronics.getBrand());
@@ -323,11 +367,13 @@ public class Controller {
                 modelIdField.setText(electronics.getModelId());
                 subGroupComboBox.setValue(electronics.getSubGroup());
                 warrantyPeriodField.setText(String.valueOf(electronics.getWarrantyPeriod()));
+                typeComboBox.setValue("Electronics");
             } else if (selectedItem instanceof Furniture) {
                 Furniture furniture = (Furniture) selectedItem;
                 extraField.setText(furniture.getMaterial());
                 subGroupComboBox.setValue(furniture.getSubGroup());
                 dimensionsField.setText(furniture.getDimensions());
+                typeComboBox.setValue("Furniture");
             }
         }
     }
@@ -336,34 +382,127 @@ public class Controller {
     protected void onSaveButtonClick() {
         Item selectedItem = inventoryListView.getSelectionModel().getSelectedItem();
         if (selectedItem != null) {
-            selectedItem.setName(nameField.getText());
-            selectedItem.setQuantity(Integer.parseInt(quantityField.getText()));
-            selectedItem.setPrice(Double.parseDouble(priceField.getText()));
-            selectedItem.setDescription(descriptionField.getText());
+            String name = nameField.getText();
+            if (name == null || name.isEmpty()) {
+                showAlert("Name field is empty. Please enter a name.");
+                return;
+            }
+
+            String quantityText = quantityField.getText();
+            if (quantityText == null || !quantityText.matches("\\d+")) {
+                showAlert("Invalid quantity. Please enter a positive integer.");
+                return;
+            }
+            int quantity = Integer.parseInt(quantityText);
+
+            String priceText = priceField.getText();
+            if (priceText == null || !priceText.matches("\\d*(\\.\\d+)?")) {
+                showAlert("Invalid price. Please enter a non-negative number.");
+                return;
+            }
+            double price = Double.parseDouble(priceText);
+
+            String description = descriptionField.getText();
 
             if (selectedItem instanceof Book) {
                 Book book = (Book) selectedItem;
-                book.setAuthor(extraField.getText());
-                book.setSubGroup(subGroupComboBox.getValue());
-                clearFields();
+                String author = extraField.getText();
+                if (author == null || author.isEmpty()) {
+                    showAlert("Author field is empty. Please enter an author.");
+                    return;
+                }
+                String subGroup = subGroupComboBox.getValue();
+                if (subGroup == null || subGroup.isEmpty()) {
+                    showAlert("Sub Group field is empty. Please select a Sub Group.");
+                    return;
+                }
+                String pagesText = pagesField.getText();
+                if (pagesText == null || !pagesText.matches("\\d+")) {
+                    showAlert("Invalid number of pages. Please enter a positive integer.");
+                    return;
+                }
+                int numberOfPages = Integer.parseInt(pagesText);
+                String publisher = publisherField.getText();
+                if (publisher == null || publisher.isEmpty()) {
+                    showAlert("Publisher field is empty. Please enter a publisher.");
+                    return;
+                }
+
+                book.setName(name);
+                book.setQuantity(quantity);
+                book.setPrice(price);
+                book.setDescription(description);
+                book.setAuthor(author);
+                book.setSubGroup(subGroup);
                 // Update the pages and publisher as needed
+                book.setPublisher(publisher);
             } else if (selectedItem instanceof Electronics) {
                 Electronics electronics = (Electronics) selectedItem;
-                electronics.setBrand(extraField.getText());
-                electronics.setColor(colorField.getText());
-                electronics.setModelId(modelIdField.getText());
-                electronics.setSubGroup(subGroupComboBox.getValue());
-                electronics.setWarrantyPeriod(Integer.parseInt(warrantyPeriodField.getText()));
-                clearFields();
+                String brand = extraField.getText();
+                if (brand == null || brand.isEmpty()) {
+                    showAlert("Brand field is empty. Please enter a brand.");
+                    return;
+                }
+                String color = colorField.getText();
+                if (color == null || color.isEmpty()) {
+                    showAlert("Color field is empty. Please enter a color.");
+                    return;
+                }
+                String modelId = modelIdField.getText();
+                if (modelId == null || modelId.isEmpty()) {
+                    showAlert("Model ID field is empty. Please enter a Model ID.");
+                    return;
+                }
+                String subGroup = subGroupComboBox.getValue();
+                if (subGroup == null || subGroup.isEmpty()) {
+                    showAlert("Sub Group field is empty. Please select a Sub Group.");
+                    return;
+                }
+                String warrantyPeriodText = warrantyPeriodField.getText();
+                if (warrantyPeriodText == null || !warrantyPeriodText.matches("\\d+")) {
+                    showAlert("Invalid warranty period. Please enter a positive integer.");
+                    return;
+                }
+                int warrantyPeriod = Integer.parseInt(warrantyPeriodText);
+
+                electronics.setName(name);
+                electronics.setQuantity(quantity);
+                electronics.setPrice(price);
+                electronics.setDescription(description);
+                electronics.setBrand(brand);
+                electronics.setColor(color);
+                electronics.setModelId(modelId);
+                electronics.setSubGroup(subGroup);
+                electronics.setWarrantyPeriod(warrantyPeriod);
             } else if (selectedItem instanceof Furniture) {
                 Furniture furniture = (Furniture) selectedItem;
-                furniture.setMaterial(extraField.getText());
-                furniture.setSubGroup(subGroupComboBox.getValue());
-                furniture.setDimensions(dimensionsField.getText());
-                clearFields();
+                String material = extraField.getText();
+                if (material == null || material.isEmpty()) {
+                    showAlert("Material field is empty. Please enter a material.");
+                    return;
+                }
+                String subGroup = subGroupComboBox.getValue();
+                if (subGroup == null || subGroup.isEmpty()) {
+                    showAlert("Sub Group field is empty. Please select a Sub Group.");
+                    return;
+                }
+                String dimensions = dimensionsField.getText();
+                if (dimensions == null || dimensions.isEmpty()) {
+                    showAlert("Dimensions field is empty. Please enter dimensions.");
+                    return;
+                }
+
+                furniture.setName(name);
+                furniture.setQuantity(quantity);
+                furniture.setPrice(price);
+                furniture.setDescription(description);
+                furniture.setMaterial(material);
+                furniture.setSubGroup(subGroup);
+                furniture.setDimensions(dimensions);
             }
 
             inventoryListView.refresh(); // Refresh the ListView to show the updated details
+            clearFields(); // Clear the fields after saving the changes
         }
     }
 }
