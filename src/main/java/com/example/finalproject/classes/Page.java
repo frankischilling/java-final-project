@@ -1,8 +1,11 @@
 package com.example.finalproject.classes;
 
+import java.util.ArrayList;
+
 public class Page {
     private int pageNumber;
     private String content;
+    private ArrayList<Page> pages;
 
     public Page(int pageNumber, String content) {
         this.pageNumber = pageNumber;
@@ -28,4 +31,6 @@ public class Page {
     public String toString() {
         return "Page " + pageNumber + ": " + content;
     }
+
+
 }

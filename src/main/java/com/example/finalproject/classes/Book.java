@@ -1,6 +1,8 @@
 package com.example.finalproject.classes;
 
 import com.example.finalproject.Item;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -59,5 +61,15 @@ public class Book extends Item {
 
     public List<Page> getPages() {
         return pages;
+    }
+
+    public void setPages(int numberOfPages) {
+        if (numberOfPages <= 0) {
+            throw new IllegalArgumentException("Number of pages must be positive.");
+        }
+        this.pages = new ArrayList<Page>();
+        for (int i = 0; i < numberOfPages; i++) {
+            this.pages.add(new Page(i + 1, "")); // You can replace "" with the actual content of the page
+        }
     }
 }
