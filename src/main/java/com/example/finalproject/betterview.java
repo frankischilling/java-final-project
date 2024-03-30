@@ -69,25 +69,46 @@ public class betterview {
             field.setManaged(true);
         }
     }
+
     @FXML
     protected void onSaveButtonClick() {
         if (item != null) {
             item.setName(nameField.getText());
-            item.setQuantity(Integer.parseInt(quantityField.getText()));
-            item.setPrice(Double.parseDouble(priceField.getText()));
+            try {
+                item.setQuantity(Integer.parseInt(quantityField.getText()));
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid quantity. Please enter a valid integer.");
+                return;
+            }
+            try {
+                item.setPrice(Double.parseDouble(priceField.getText()));
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid price. Please enter a valid number.");
+                return;
+            }
             item.setDescription(descriptionField.getText());
 
             if (item instanceof Book) {
                 Book book = (Book) item;
                 book.setAuthor(authorField.getText());
                 book.setPublisher(publisherField.getText());
-                book.setPages(Integer.parseInt(pagesField.getText()));
+                try {
+                    book.setPages(Integer.parseInt(pagesField.getText()));
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid number of pages. Please enter a valid integer.");
+                    return;
+                }
             } else if (item instanceof Electronics) {
                 Electronics electronics = (Electronics) item;
                 electronics.setBrand(brandField.getText());
                 electronics.setModelId(modelIdField.getText());
                 electronics.setColor(colorField.getText());
-                electronics.setWarrantyPeriod(Integer.parseInt(warrantyPeriodField.getText()));
+                try {
+                    electronics.setWarrantyPeriod(Integer.parseInt(warrantyPeriodField.getText()));
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid warranty period. Please enter a valid integer.");
+                    return;
+                }
             } else if (item instanceof Furniture) {
                 Furniture furniture = (Furniture) item;
                 furniture.setMaterial(materialField.getText());

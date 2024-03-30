@@ -53,7 +53,18 @@ public class Controller {
 
     // Add the @FXML annotation to the addButton field
     public void refreshListView() {
-        inventoryListView.refresh();
+        // Clear the ListView
+        inventoryListView.getItems().clear();
+
+        // Add all items back to the ListView
+        inventoryListView.getItems().addAll(allItems);
+
+        // Sort the items by the numerical part of their ID
+        inventoryListView.getItems().sort((item1, item2) -> {
+            int id1 = Integer.parseInt(item1.getId().substring(4)); // Extract the numerical part of the ID
+            int id2 = Integer.parseInt(item2.getId().substring(4)); // Extract the numerical part of the ID
+            return Integer.compare(id1, id2); // Compare the numerical parts
+        });
     }
     private void clearFields() {
         nameField.clear();
