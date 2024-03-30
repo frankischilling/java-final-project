@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.finalproject.betterview">
+    <Label fx:id="itemDetailsLabel"/>
+    <TextField fx:id="nameField" promptText="Name"/>
+    <TextField fx:id="quantityField" promptText="Quantity"/>
+    <TextField fx:id="priceField" promptText="Price"/>
+    <TextField fx:id="descriptionField" promptText="Description"/>
+    <TextField fx:id="authorField" promptText="Author"/>
+    <TextField fx:id="publisherField" promptText="Publisher"/>
+    <TextField fx:id="pagesField" promptText="Pages"/>
+    <TextField fx:id="brandField" promptText="Brand"/>
+    <TextField fx:id="modelIdField" promptText="Model ID"/>
+    <TextField fx:id="colorField" promptText="Color"/>
+    <TextField fx:id="warrantyPeriodField" promptText="Warranty Period"/>
+    <TextField fx:id="materialField" promptText="Material"/>
+    <TextField fx:id="dimensionsField" promptText="Dimensions"/>
+    <Button fx:id="saveButton" text="Save" onAction="#onSaveButtonClick"/>
+</VBox>

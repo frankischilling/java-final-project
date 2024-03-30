@@ -1,3 +1,7 @@
+// thou who read this code may god have mercy on your soul
+// i have no idea what i am doing
+// i was forced to do this... im not a murderer i swear
+
 package com.example.finalproject;
 
 import com.example.finalproject.classes.*;
@@ -7,15 +11,15 @@ import com.example.finalproject.classes.Furniture;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseButton;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import javafx.collections.FXCollections;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -42,6 +46,11 @@ public class Controller {
     private TextField pagesField;
     @FXML
     private TextField descriptionField, publisherField, warrantyPeriodField, dimensionsField;
+    @FXML
+    private TextField searchField;
+
+    private ObservableList<Item> allItems = FXCollections.observableArrayList();
+
     // Add the @FXML annotation to the addButton field
     public void refreshListView() {
         inventoryListView.refresh();
@@ -368,6 +377,11 @@ public class Controller {
 
             if (item != null) { // Add the item to the list view
                 inventoryListView.getItems().add(item);
+                inventoryListView.getItems().sort((item1, item2) -> {
+                    int id1 = Integer.parseInt(item1.getId().substring(4)); // Extract the numerical part of the ID
+                    int id2 = Integer.parseInt(item2.getId().substring(4)); // Extract the numerical part of the ID
+                    return Integer.compare(id1, id2); // Compare the numerical parts
+                });
             };
         } catch (NumberFormatException e) {
             showAlert("An error occurred: " + e.getMessage());
@@ -410,12 +424,12 @@ public class Controller {
         Item selectedItem = inventoryListView.getSelectionModel().getSelectedItem();
         if (selectedItem != null) {
             Stage stage = new Stage();
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("detailed-view.fxml"));
-            Scene scene = new Scene(fxmlLoader.load());
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("better-view.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), 800, 600); // Change 800 and 600 to your desired width and height
 
-            // Pass the selected item and the Controller to the DetailedViewController
-            DetailedViewController detailedViewController = fxmlLoader.getController();
-            detailedViewController.setItem(selectedItem, this); // Pass 'this' as the second argument
+            // Pass the selected item and the current Controller instance to the BetterViewController
+            betterview betterViewController = fxmlLoader.getController();
+            betterViewController.setItem(selectedItem, this); // 'this' refers to the current Controller instance
 
             // Show the new stage
             stage.setScene(scene);
@@ -488,12 +502,31 @@ public class Controller {
         for (int i = 0; i < 100; i++) {
             pages.add(new Page(i + 1, "Content of page " + (i + 1)));
         }
+        // tester boook, phone, and chair
+
+        Electronics testElectronics = new Electronics("Test Electronics", 5, 499.99, "Test Brand", "Test Model ID", "Test Sub Group", "Test Color");
+        testElectronics.setDescription("This is a test electronics item.");
+        testElectronics.setWarrantyPeriod(1);
+
+        Furniture testFurniture = new Furniture("Test Furniture", 3, 199.99, "Test Material", "Test Sub Group");
+        testFurniture.setDescription("This is a test furniture item.");
+        testFurniture.setDimensions("10x10x10");
+
         Book testBook = new Book("Test Book", 10, 59.99, "Test Author", "Fiction", pages);
         testBook.setDescription("This is a test book.");
         testBook.setPublisher("Test Publisher");
 
-        // Add the test Book item to the ListView
+        // Add the test items
         inventoryListView.getItems().add(testBook);
+        inventoryListView.getItems().add(testElectronics);
+        inventoryListView.getItems().add(testFurniture);
+
+        // Sort the items by the numerical part of their ID
+        inventoryListView.getItems().sort((item1, item2) -> {
+            int id1 = Integer.parseInt(item1.getId().substring(4)); // Extract the numerical part of the ID
+            int id2 = Integer.parseInt(item2.getId().substring(4)); // Extract the numerical part of the ID
+            return Integer.compare(id1, id2); // Compare the numerical parts
+        });
 
         // Add a listener to the subGroupComboBox's editor property
         quantityField.textProperty().addListener(new ChangeListener<String>() {
@@ -513,12 +546,12 @@ public class Controller {
                     try {
                         // Create a new stage and scene
                         Stage stage = new Stage();
-                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("detailed-view.fxml"));
-                        Scene scene = new Scene(fxmlLoader.load());
+                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("better-view.fxml"));
+                        Scene scene = new Scene(fxmlLoader.load(), 800, 600); // Change 800 and 600 to your desired width and height
 
-                        // Pass the selected item and the Controller to the DetailedViewController
-                        DetailedViewController detailedViewController = fxmlLoader.getController();
-                        detailedViewController.setItem(selectedItem, this); // Pass 'this' as the second argument
+                        // Pass the selected item and the Controller to the BetterViewController
+                        betterview betterview = fxmlLoader.getController();
+                        betterview.setItem(selectedItem, this); // Pass 'this' as the second argument
 
                         // Show the new stage
                         stage.setScene(scene);
@@ -527,6 +560,26 @@ public class Controller {
                         e.printStackTrace();
                     }
                 }
+            }
+        });
+
+        // search shit
+
+        // Initialize allItems with the items in inventoryListView
+        allItems.addAll(inventoryListView.getItems());
+
+        // Add a listener to the search field
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            // Convert the search text to lower case
+            String searchText = newValue.toLowerCase();
+
+            // If the search text is not empty, filter the items in allItems based on the search text
+            if (!searchText.isEmpty()) {
+                ObservableList<Item> filteredItems = allItems.filtered(item -> item.getName().toLowerCase().contains(searchText));
+                inventoryListView.setItems(filteredItems);
+            } else {
+                // If the search text is empty, set all items back to the inventoryListView
+                inventoryListView.setItems(allItems);
             }
         });
     }

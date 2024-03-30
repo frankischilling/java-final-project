@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.TextField?>
+
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.finalproject.Controller">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+    </padding>
+
+    <Label text="Inventory Management System" />
+
+    <ComboBox fx:id="typeComboBox" onAction="#onTypeSelected" maxWidth="Infinity">
+        <items>
+            <FXCollections fx:factory="observableArrayList">
+                <String fx:value="Book"/>
+                <String fx:value="Electronics"/>
+                <String fx:value="Furniture"/>
+            </FXCollections>
+        </items>
+    </ComboBox>
+    <ComboBox fx:id="subGroupComboBox" maxWidth="Infinity"/>
+    <TextField fx:id="nameField" promptText="Name"/>
+    <TextField fx:id="quantityField" promptText="Quantity"/>
+    <TextField fx:id="priceField" promptText="Price"/>
+    <TextField fx:id="pagesField" promptText="Number of Pages" />
+    <TextField fx:id="extraField" promptText="Extra"/>
+    <TextField fx:id="colorField" promptText="Color"/>
+    <TextField fx:id="modelIdField" promptText="Model ID"/>
+    <TextField fx:id="descriptionField" promptText="Description"/>
+    <TextField fx:id="publisherField" promptText="Publisher"/>
+    <TextField fx:id="warrantyPeriodField" promptText="Warranty Period"/>
+    <TextField fx:id="dimensionsField" promptText="Dimensions"/>
+    <HBox spacing="10.0">
+        <Button text="Add" onAction="#onAddButtonClick"/>
+        <Button text="Remove" onAction="#onRemoveButtonClick"/>
+    </HBox>
+    <TextField fx:id="searchField" promptText="Search"/>
+    <ListView fx:id="inventoryListView" onMouseClicked="#onItemSelected"/>
+</VBox>

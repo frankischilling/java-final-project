@@ -44,5 +44,6 @@
         <Button text="Add" onAction="#onAddButtonClick"/>
         <Button text="Remove" onAction="#onRemoveButtonClick"/>
     </HBox>
+    <TextField fx:id="searchField" promptText="Search"/>
     <ListView fx:id="inventoryListView" onMouseClicked="#onItemSelected"/>
 </VBox>
