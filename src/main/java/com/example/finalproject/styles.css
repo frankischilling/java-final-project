@@ -1,22 +1,43 @@
-.root {
-    -fx-font-family: "Arial";
-    -fx-background-color: #f0f0f0;
+/* Style for all TextFields */
+.TextField {
+    -fx-font-size: 14px;
+    -fx-padding: 10px;
+    -fx-background-color: #fff;
+    -fx-border-color: #000;
+    -fx-border-radius: 5px;
 }
 
-/* styles.css */
-.label {
-    -fx-font-size: 14px;
+/* Style for all Labels */
+.Label {
+    -fx-font-size: 16px;
     -fx-font-weight: bold;
     -fx-text-fill: #333;
 }
 
-.text-field {
-    -fx-font-size: 12px;
-    -fx-padding: 10px;
+/* Style for the Button */
+.Button {
+    -fx-font-size: 16px;
+    -fx-background-color: #4CAF50; /* Green */
+    -fx-border: none;
+    -fx-color: white;
+    -fx-text-align: center;
+    -fx-text-decoration: none;
+    -fx-display: inline-block;
+    -fx-font-size: 16px;
+    -fx-margin: 4px 2px;
+    -fx-cursor: pointer;
+    -fx-border-radius: 12px;
 }
 
-.button {
-    -fx-background-color: #4CAF50;
+/* New styles for better-view.fxml */
+#itemDetailsLabel {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333;
+}
+
+#saveButton {
+    -fx-background-color: #007BFF; /* Blue */
     -fx-text-fill: white;
-    -fx-padding: 10px;
+    -fx-font-weight: bold;
 }

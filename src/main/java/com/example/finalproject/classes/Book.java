@@ -63,13 +63,10 @@ public class Book extends Item {
         return pages;
     }
 
-    public void setPages(int numberOfPages) {
-        if (numberOfPages <= 0) {
-            throw new IllegalArgumentException("Number of pages must be positive.");
+    public void setPages(List<Page> pages) {
+        if (pages == null || pages.isEmpty()) {
+            throw new IllegalArgumentException("Pages cannot be null or empty.");
         }
-        this.pages = new ArrayList<Page>();
-        for (int i = 0; i < numberOfPages; i++) {
-            this.pages.add(new Page(i + 1, "")); // You can replace "" with the actual content of the page
-        }
+        this.pages = pages;
     }
 }

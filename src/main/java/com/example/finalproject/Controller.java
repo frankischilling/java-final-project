@@ -61,9 +61,14 @@ public class Controller {
 
         // Sort the items by the numerical part of their ID
         inventoryListView.getItems().sort((item1, item2) -> {
-            int id1 = Integer.parseInt(item1.getId().substring(4)); // Extract the numerical part of the ID
-            int id2 = Integer.parseInt(item2.getId().substring(4)); // Extract the numerical part of the ID
-            return Integer.compare(id1, id2); // Compare the numerical parts
+            try {
+                int id1 = Integer.parseInt(item1.getId().substring(4)); // Extract the numerical part of the ID
+                int id2 = Integer.parseInt(item2.getId().substring(4)); // Extract the numerical part of the ID
+                return Integer.compare(id1, id2); // Compare the numerical parts
+            } catch (NumberFormatException e) {
+                System.out.println("Error parsing item ID: " + e.getMessage());
+                return 0; // If there's an error parsing the ID, don't change the order of the items
+            }
         });
     }
     private void clearFields() {
@@ -393,6 +398,7 @@ public class Controller {
                     int id2 = Integer.parseInt(item2.getId().substring(4)); // Extract the numerical part of the ID
                     return Integer.compare(id1, id2); // Compare the numerical parts
                 });
+                refreshListView(); // Refresh the ListView after adding the item
             };
         } catch (NumberFormatException e) {
             showAlert("An error occurred: " + e.getMessage());
@@ -411,11 +417,11 @@ public class Controller {
 
                 alert.showAndWait().ifPresent(response -> {
                     if (response == ButtonType.OK) {
-                        removeQuantity(1); // Decrease the quantity of the selected item by 1
+                        removeQuantity(); // Decrease the quantity of the selected item by 1
                     }
                 });
             } else {
-                removeQuantity(1); // Decrease the quantity of the selected item by 1
+                removeQuantity(); // Decrease the quantity of the selected item by 1
             }
         } else {
             showAlert("No item selected. Please select an item to remove.");
@@ -439,7 +445,7 @@ public class Controller {
             Scene scene = new Scene(fxmlLoader.load(), 800, 600); // Change 800 and 600 to your desired width and height
 
             // Pass the selected item and the current Controller instance to the BetterViewController
-            betterview betterViewController = fxmlLoader.getController();
+            BetterView betterViewController = fxmlLoader.getController();
             betterViewController.setItem(selectedItem, this); // 'this' refers to the current Controller instance
 
             // Show the new stage
@@ -559,9 +565,7 @@ public class Controller {
                         Stage stage = new Stage();
                         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("better-view.fxml"));
                         Scene scene = new Scene(fxmlLoader.load(), 800, 600); // Change 800 and 600 to your desired width and height
-
-                        // Pass the selected item and the Controller to the BetterViewController
-                        betterview betterview = fxmlLoader.getController();
+                        BetterView betterview = fxmlLoader.getController();
                         betterview.setItem(selectedItem, this); // Pass 'this' as the second argument
 
                         // Show the new stage
@@ -595,10 +599,10 @@ public class Controller {
         });
     }
     @FXML
-    protected void removeQuantity(int amount) {
+    protected void removeQuantity() {
         Item selectedItem = inventoryListView.getSelectionModel().getSelectedItem();
         if (selectedItem != null) {
-            int newQuantity = selectedItem.getQuantity() - amount;
+            int newQuantity = selectedItem.getQuantity() - 1;
             if (newQuantity <= 0) {
                 inventoryListView.getItems().remove(selectedItem);
             } else {
