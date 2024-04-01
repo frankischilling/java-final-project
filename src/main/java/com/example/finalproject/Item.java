@@ -1,5 +1,7 @@
 package com.example.finalproject;
 
+import javafx.scene.image.Image;
+
 public abstract class Item {
     // new field
     private boolean hasImage = false;
@@ -101,4 +103,10 @@ public abstract class Item {
         this.imagePath = imagePath;
     }
 
+    public Image getImage() {
+        if (hasImage() && imagePath != null) {
+            return new Image(imagePath);
+        }
+        return null;
+    }
 }

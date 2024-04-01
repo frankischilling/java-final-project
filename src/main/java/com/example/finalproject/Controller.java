@@ -13,13 +13,19 @@ import com.example.finalproject.classes.Furniture;
 
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.collections.FXCollections;
+import javafx.util.Callback;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -536,6 +542,64 @@ public class Controller {
             } else {
                 // If the search text is empty, set all items back to the inventoryListView
                 inventoryListView.setItems(allItems);
+            }
+        });
+
+        inventoryListView.setCellFactory(new Callback<ListView<Item>, ListCell<Item>>() {
+            @Override
+            public ListCell<Item> call(ListView<Item> param) {
+                return new ListCell<Item>() {
+                    @Override
+                    protected void updateItem(Item item, boolean empty) {
+                        super.updateItem(item, empty);
+
+                        if (empty || item == null) {
+                            setText(null);
+                            setGraphic(null);
+                        } else {
+                            ImageView imageView = new ImageView();
+                            imageView.setFitHeight(100); // Set the height of the image
+                            imageView.setFitWidth(100); // Set the width of the image
+                            imageView.setImage(item.getImage());
+
+                            Label nameLabel = new Label(item.getName());
+                            Label quantityLabel = new Label("Quantity: " + item.getQuantity());
+                            Label priceLabel = new Label("Price: " + item.getPrice());
+                            Label descriptionLabel = new Label("Description: " + item.getDescription());
+
+                            VBox vBox = new VBox(nameLabel, quantityLabel, priceLabel, descriptionLabel);
+                            vBox.setSpacing(10); // Set the spacing between the nodes
+
+                            if (item instanceof Book book) {
+                                Label authorLabel = new Label("Author: " + book.getAuthor());
+                                Label publisherLabel = new Label("Publisher: " + book.getPublisher());
+                                Label pagesLabel = new Label("Pages: " + book.getPages().size());
+                                vBox.getChildren().addAll(authorLabel, publisherLabel, pagesLabel);
+                            } else if (item instanceof Electronics electronics) {
+                                Label brandLabel = new Label("Brand: " + electronics.getBrand());
+                                Label modelIdLabel = new Label("Model ID: " + electronics.getModelId());
+                                Label subGroupLabel = new Label("Sub Group: " + electronics.getSubGroup());
+                                Label colorLabel = new Label("Color: " + electronics.getColor());
+                                Label warrantyPeriodLabel = new Label("Warranty Period: " + electronics.getWarrantyPeriod());
+                                vBox.getChildren().addAll(brandLabel, modelIdLabel, subGroupLabel, colorLabel, warrantyPeriodLabel);
+                            } else if (item instanceof Furniture furniture) {
+                                Label materialLabel = new Label("Material: " + furniture.getMaterial());
+                                Label dimensionsLabel = new Label("Dimensions: " + furniture.getDimensions());
+                                vBox.getChildren().addAll(materialLabel, dimensionsLabel);
+                            }
+
+                            vBox.setSpacing(10); // Set the spacing between the nodes
+                            vBox.setAlignment(Pos.CENTER); // Center the content in the VBox
+
+                            HBox hBox = new HBox(imageView, vBox);
+                            hBox.setSpacing(10); // Set the spacing between the image and the text
+                            hBox.setAlignment(javafx.geometry.Pos.CENTER); // Center the content in the HBox
+
+                            setText(null);
+                            setGraphic(hBox);
+                        }
+                    }
+                };
             }
         });
     }
