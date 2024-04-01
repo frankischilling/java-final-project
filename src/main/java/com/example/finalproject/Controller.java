@@ -49,7 +49,7 @@ public class Controller {
     @FXML
     private TextField searchField;
 
-    private ObservableList<Item> allItems = FXCollections.observableArrayList();
+    private final ObservableList<Item> allItems = FXCollections.observableArrayList();
 
     // Add the @FXML annotation to the addButton field
     public void refreshListView() {
@@ -404,6 +404,7 @@ public class Controller {
             showAlert("An error occurred: " + e.getMessage());
         }
     }
+
     // Add the @FXML annotation to the onRemoveButtonClick method
     @FXML
     protected void onRemoveButtonClick() {
@@ -427,6 +428,7 @@ public class Controller {
             showAlert("No item selected. Please select an item to remove.");
         }
     }
+
     // Add the @FXML annotation to the onRemoveButtonClick method
     private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -487,21 +489,17 @@ public class Controller {
             selectedItem.setPrice(Double.parseDouble(priceField.getText()));
             selectedItem.setDescription(descriptionField.getText());
 
-
-            if (selectedItem instanceof Book) {
-                Book book = (Book) selectedItem;
+            if (selectedItem instanceof Book book) {
                 book.setAuthor(extraField.getText());
                 book.setSubGroup(subGroupComboBox.getValue());
                 // Update the pages and publisher as needed
-            } else if (selectedItem instanceof Electronics) {
-                Electronics electronics = (Electronics) selectedItem;
+            } else if (selectedItem instanceof Electronics electronics) {
                 electronics.setBrand(extraField.getText());
                 electronics.setColor(colorField.getText());
                 electronics.setModelId(modelIdField.getText());
                 electronics.setSubGroup(subGroupComboBox.getValue());
                 electronics.setWarrantyPeriod(Integer.parseInt(warrantyPeriodField.getText()));
-            } else if (selectedItem instanceof Furniture) {
-                Furniture furniture = (Furniture) selectedItem;
+            } else if (selectedItem instanceof Furniture furniture) {
                 furniture.setMaterial(extraField.getText());
                 furniture.setSubGroup(subGroupComboBox.getValue());
                 furniture.setDimensions(dimensionsField.getText());
