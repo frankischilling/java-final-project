@@ -1,10 +1,7 @@
 package com.example.finalproject;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -24,6 +21,8 @@ public class BetterView {
     private Label authorLabel, publisherLabel, pagesLabel, brandLabel, modelIdLabel, colorLabel, warrantyPeriodLabel, materialLabel, dimensionsLabel;
     @FXML
     private VBox bookFieldsContainer, electronicsFieldsContainer, furnitureFieldsContainer;
+    @FXML
+    private ScrollPane imageScrollPane;
     @FXML
     private ImageView itemImageView;
     @FXML
@@ -193,8 +192,35 @@ public class BetterView {
             Image image = new Image(selectedFile.toURI().toString());
             // Set the image to the ImageView
             itemImageView.setImage(image);
+            // Preserve the ratio of the image
+            itemImageView.setPreserveRatio(true);
+            // Set the ScrollPane to fit the size of the image
+            imageScrollPane.setFitToHeight(true);
+            imageScrollPane.setFitToWidth(true);
             // Store the image path in the temporary variable
             selectedImagePath = selectedFile.toURI().toString();
         }
+    }
+
+    @FXML
+    protected void onRemoveImageButtonClick() {
+        if (item.hasImage()) {
+            item.setHasImage(false);
+            item.setImagePath(null);
+            itemImageView.setImage(null);
+            controller.refreshListView();
+        }
+    }
+
+    public void initialize() {
+        // Add a ChangeListener to the width and height properties of the ScrollPane
+        imageScrollPane.widthProperty().addListener((observable, oldValue, newValue) -> {
+            // Adjust the fit width of the ImageView based on the new width of the ScrollPane
+            itemImageView.setFitWidth(newValue.doubleValue());
+        });
+        imageScrollPane.heightProperty().addListener((observable, oldValue, newValue) -> {
+            // Adjust the fit height of the ImageView based on the new height of the ScrollPane
+            itemImageView.setFitHeight(newValue.doubleValue());
+        });
     }
 }

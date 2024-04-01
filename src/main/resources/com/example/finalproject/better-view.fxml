@@ -64,9 +64,13 @@
         <Button fx:id="saveButton" text="Save" GridPane.columnIndex="0" GridPane.rowIndex="8" onAction="#onSaveButtonClick"/>
 
         <!-- Image View -->
-        <ImageView fx:id="itemImageView" GridPane.columnIndex="0" GridPane.rowIndex="9"/>
-
+        <ScrollPane fx:id="imageScrollPane" GridPane.columnIndex="0" GridPane.rowIndex="9">
+            <ImageView fx:id="itemImageView"/>
+        </ScrollPane>
         <!-- Image Select Button -->
         <Button fx:id="imageButton" text="Select Image" GridPane.columnIndex="0" GridPane.rowIndex="10" onAction="#onImageButtonClick"/>
+
+        <!-- Imagew Remove Button -->
+        <Button fx:id="removeImageButton" text="Remove Image" GridPane.columnIndex="0" GridPane.rowIndex="11" onAction="#onRemoveImageButtonClick"/>
     </GridPane>
 </AnchorPane>
