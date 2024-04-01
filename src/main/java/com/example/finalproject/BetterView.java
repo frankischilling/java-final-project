@@ -35,10 +35,19 @@ public class BetterView {
         this.item = item;
         this.controller = controller;
 
+        // Enable default fields
+        nameField.setEditable(true);
+        quantityField.setEditable(true);
+        priceField.setEditable(true);
+        descriptionField.setEditable(true);
+
         nameField.setText(item.getName());
         quantityField.setText(String.valueOf(item.getQuantity()));
         priceField.setText(String.valueOf(item.getPrice()));
         descriptionField.setText(item.getDescription());
+
+        defaultFieldsContainer.setVisible(true);
+        defaultFieldsContainer.setManaged(true);
 
         // Initially hide all containers
         hideAllContainers();
