@@ -2,14 +2,14 @@ package com.example.finalproject;
 
 public abstract class Item {
     // new field
+    private boolean hasImage = false;
     private static int nextId = 1;
     private String id;
     private String name;
     private int quantity;
     private double price;
-
+    private String imagePath;
     private String description;
-
     // new constructor parameter
     public Item(String name, int quantity, double price) {
         this.id = "ITEM" + nextId++;
@@ -80,8 +80,25 @@ public abstract class Item {
 
     @Override
     public String toString() {
-        return "ID: " + id + ", Item: " + name + ", Quantity: " + quantity + ", Price: " + price + ", Description: " + description;
+        return "ID: " + id + ", Item: " + name + ", Quantity: " + quantity + ", Price: " + price + ", Description: " + description + (hasImage ? " (Image Attached)" : "");
     }
 
     public abstract String getType();
+
+    public boolean hasImage() {
+        return hasImage;
+    }
+
+    public void setHasImage(boolean hasImage) {
+        this.hasImage = hasImage;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
 }

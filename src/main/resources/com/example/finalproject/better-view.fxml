@@ -4,6 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
+<?import javafx.scene.image.ImageView?>
 <AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.finalproject.BetterView" stylesheets="/com/example/finalproject/styles.css">
     <GridPane layoutX="20" layoutY="20" vgap="5" hgap="5" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" AnchorPane.bottomAnchor="50.0">
         <!-- Title -->
@@ -21,7 +22,10 @@
 
             <Label text="Description:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
             <TextField fx:id="descriptionField" GridPane.columnIndex="1" GridPane.rowIndex="4" prefWidth="300"/>
+
+
         </VBox>
+
         <!-- Book Fields Container -->
         <VBox fx:id="bookFieldsContainer" GridPane.columnIndex="0" GridPane.rowIndex="5" GridPane.columnSpan="2" visible="false" managed="false" spacing="5">
             <Label text="Custom Item Details:" style="-fx-font-weight: bold; -fx-text-fill: #333; -fx-font-size: 16px;" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
@@ -55,7 +59,14 @@
             <TextField fx:id="dimensionsField" prefWidth="300"/>
         </VBox>
 
+    <GridPane layoutX="20" layoutY="20" vgap="5" hgap="5" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" AnchorPane.bottomAnchor="50.0"/>
         <!-- Save Button -->
-        <Button fx:id="saveButton" text="Save" GridPane.columnIndex="0" GridPane.rowIndex="8" GridPane.columnSpan="2" onAction="#onSaveButtonClick" styleClass="button"/>
+        <Button fx:id="saveButton" text="Save" GridPane.columnIndex="0" GridPane.rowIndex="8" onAction="#onSaveButtonClick"/>
+
+        <!-- Image View -->
+        <ImageView fx:id="itemImageView" GridPane.columnIndex="0" GridPane.rowIndex="9"/>
+
+        <!-- Image Select Button -->
+        <Button fx:id="imageButton" text="Select Image" GridPane.columnIndex="0" GridPane.rowIndex="10" onAction="#onImageButtonClick"/>
     </GridPane>
 </AnchorPane>

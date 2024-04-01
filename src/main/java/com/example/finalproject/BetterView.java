@@ -1,13 +1,20 @@
 package com.example.finalproject;
 
-import com.example.finalproject.classes.*;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
-
-import java.util.ArrayList;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
+import java.io.File;
 import java.util.List;
+
+import com.example.finalproject.Controller;
+import com.example.finalproject.classes.*;
 
 public class BetterView {
     public VBox defaultFieldsContainer;
@@ -17,6 +24,11 @@ public class BetterView {
     private Label authorLabel, publisherLabel, pagesLabel, brandLabel, modelIdLabel, colorLabel, warrantyPeriodLabel, materialLabel, dimensionsLabel;
     @FXML
     private VBox bookFieldsContainer, electronicsFieldsContainer, furnitureFieldsContainer;
+    @FXML
+    private ImageView itemImageView;
+    @FXML
+    private Button imageButton;
+    private String selectedImagePath;
     private Item item;
     private Controller controller;
 
@@ -54,6 +66,12 @@ public class BetterView {
 
             furnitureFieldsContainer.setVisible(true);
             furnitureFieldsContainer.setManaged(true);
+        }
+
+        // Load the item image
+        if (item.getImagePath() != null && !item.getImagePath().isEmpty()) {
+            Image image = new Image(item.getImagePath());
+            itemImageView.setImage(image);
         }
     }
 
@@ -98,6 +116,12 @@ public class BetterView {
 
     @FXML
     protected void onSaveButtonClick() {
+        // If an image has been selected, update the Item object's image path and hasImage flag
+        if (selectedImagePath != null) {
+            item.setImagePath(selectedImagePath);
+            item.setHasImage(true);
+        }
+
         if (item != null) {
             item.setName(nameField.getText());
             try {
@@ -156,6 +180,21 @@ public class BetterView {
             }
 
             controller.refreshListView();
+        }
+    }
+
+    @FXML
+    protected void onImageButtonClick() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg"));
+        File selectedFile = fileChooser.showOpenDialog(imageButton.getScene().getWindow());
+        if (selectedFile != null) {
+            // Load the image from the selected file
+            Image image = new Image(selectedFile.toURI().toString());
+            // Set the image to the ImageView
+            itemImageView.setImage(image);
+            // Store the image path in the temporary variable
+            selectedImagePath = selectedFile.toURI().toString();
         }
     }
 }

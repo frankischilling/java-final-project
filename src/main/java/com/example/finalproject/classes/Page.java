@@ -31,6 +31,4 @@ public class Page {
     public String toString() {
         return "Page " + pageNumber + ": " + content;
     }
-
-
 }

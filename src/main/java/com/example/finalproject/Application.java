@@ -9,15 +9,15 @@ import java.io.IOException;
 public class Application extends javafx.application.Application {
     @Override
     public void start(Stage stage) throws IOException {
-        // Load the FXML file
+        /* Load the FXML file */
         FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("view.fxml"));
-        // Create the scene
+        /* Create the scene */
         Scene scene = new Scene(fxmlLoader.load(), 320, 240);
-        // Set the stage title
+        /* Set the stage title */
         stage.setTitle("Inventory Management System");
-        // Set the scene
+        /* Set the scene */
         stage.setScene(scene);
-        // Show the stage
+        /* Show the stage */
         stage.show();
     }
 

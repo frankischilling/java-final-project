@@ -1,6 +1,8 @@
-// thou who read this code may god have mercy on your soul
-// i have no idea what i am doing
-// i was forced to do this... im not a murderer i swear
+/*
+ thou who read this code may god have mercy on your soul
+ i have no idea what i am doing
+ i was forced to do this... im not a murderer i swear
+*/
 
 package com.example.finalproject;
 
@@ -9,8 +11,6 @@ import com.example.finalproject.classes.Book;
 import com.example.finalproject.classes.Electronics;
 import com.example.finalproject.classes.Furniture;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -341,7 +341,7 @@ public class Controller {
                         showAlert("Sub Group field is empty. Please select a Sub Group.");
                         return;
                     }
-                    List<Page> pages = new ArrayList<Page>();
+                    List<Page> pages = new ArrayList<>();
                     int numberOfPages = Integer.parseInt(pagesField.getText());
                     if (numberOfPages <= 0) {
                         showAlert("Invalid number of pages. Please enter a positive integer.");
@@ -399,7 +399,7 @@ public class Controller {
                     return Integer.compare(id1, id2); // Compare the numerical parts
                 });
                 refreshListView(); // Refresh the ListView after adding the item
-            };
+            }
         } catch (NumberFormatException e) {
             showAlert("An error occurred: " + e.getMessage());
         }
@@ -457,63 +457,9 @@ public class Controller {
     }
 
     @FXML
-    protected void onSaveButtonClick() {
-        Item selectedItem = inventoryListView.getSelectionModel().getSelectedItem();
-        if (selectedItem != null) {
-        // Get the values from the text fields
-            String name = nameField.getText();
-            int quantity = Integer.parseInt(quantityField.getText());
-            double price = Double.parseDouble(priceField.getText());
-            String description = descriptionField.getText();
-
-            if (name == null || name.isEmpty()) {
-                showAlert("Name field is empty. Please enter a name.");
-                return;
-            }
-
-            String quantityText = quantityField.getText();
-            if (quantityText == null || !quantityText.matches("\\d+")) {
-                showAlert("Invalid quantity. Please enter a positive integer.");
-                return;
-            }
-
-            String priceText = priceField.getText();
-            if (priceText == null || !priceText.matches("\\d*(\\.\\d+)?")) {
-                showAlert("Invalid price. Please enter a non-negative number.");
-                return;
-            }
-
-            // Update the selected item's details with the values from the fields
-            selectedItem.setName(nameField.getText());
-            selectedItem.setQuantity(Integer.parseInt(quantityField.getText()));
-            selectedItem.setPrice(Double.parseDouble(priceField.getText()));
-            selectedItem.setDescription(descriptionField.getText());
-
-            if (selectedItem instanceof Book book) {
-                book.setAuthor(extraField.getText());
-                book.setSubGroup(subGroupComboBox.getValue());
-                // Update the pages and publisher as needed
-            } else if (selectedItem instanceof Electronics electronics) {
-                electronics.setBrand(extraField.getText());
-                electronics.setColor(colorField.getText());
-                electronics.setModelId(modelIdField.getText());
-                electronics.setSubGroup(subGroupComboBox.getValue());
-                electronics.setWarrantyPeriod(Integer.parseInt(warrantyPeriodField.getText()));
-            } else if (selectedItem instanceof Furniture furniture) {
-                furniture.setMaterial(extraField.getText());
-                furniture.setSubGroup(subGroupComboBox.getValue());
-                furniture.setDimensions(dimensionsField.getText());
-            }
-
-            inventoryListView.refresh(); // Refresh the ListView to show the updated details
-            clearFields(); // Clear the fields after saving the changes
-        }
-    }
-
-    @FXML
     public void initialize() {
         //add tester book
-        List<Page> pages = new ArrayList<Page>();
+        List<Page> pages = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
             pages.add(new Page(i + 1, "Content of page " + (i + 1)));
         }
@@ -544,13 +490,10 @@ public class Controller {
         });
 
         // Add a listener to the subGroupComboBox's editor property
-        quantityField.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                // If the new value is not a number, clear the input
-                if (!newValue.matches("\\d*")) {
-                    quantityField.setText("");
-                }
+        quantityField.textProperty().addListener((observable, oldValue, newValue) -> {
+            // If the new value is not a number, clear the input
+            if (!newValue.matches("\\d*")) {
+                quantityField.setText("");
             }
         });
 
@@ -596,6 +539,7 @@ public class Controller {
             }
         });
     }
+
     @FXML
     protected void removeQuantity() {
         Item selectedItem = inventoryListView.getSelectionModel().getSelectedItem();
