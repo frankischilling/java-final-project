@@ -20,6 +20,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -61,7 +62,7 @@ public class Controller {
     // Add the @FXML annotation to the addButton field
     public void refreshListView() {
         inventoryListView.setItems(allItems); // Set the items of the ListView to allItems
-
+        inventoryListView.refresh();
         // Sort the items by the numerical part of their ID
         inventoryListView.getItems().sort((item1, item2) -> {
             try {
@@ -560,6 +561,15 @@ public class Controller {
                     Label idLabel = new Label("ID: " + item.getId());
                     Label descriptionLabel = new Label("Description: " + item.getDescription());
                     vBox.getChildren().addAll(nameLabel, idLabel, descriptionLabel);
+
+                    // If the item has an image, display it
+                    if (item.hasImage() && item.getImagePath() != null) {
+                        ImageView imageView = new ImageView(new Image(item.getImagePath()));
+                        imageView.setFitHeight(50); // Adjust the height as needed
+                        imageView.setFitWidth(50); // Adjust the width as needed
+                        imageView.setPreserveRatio(true);
+                        vBox.getChildren().add(imageView);
+                    }
 
                     // In the detailed view, add additional type-specific information
                     if (!isMinimized) {

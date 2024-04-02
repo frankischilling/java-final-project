@@ -8,6 +8,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.example.finalproject.Controller;
@@ -150,24 +151,13 @@ public class BetterView {
                 book.setAuthor(authorField.getText());
                 book.setPublisher(publisherField.getText());
                 try {
-                    int newNumberOfPages = Integer.parseInt(pagesField.getText());
-                    List<Page> currentPages = book.getPages();
-                    int currentNumberOfPages = currentPages.size();
-
-                    if (newNumberOfPages > currentNumberOfPages) {
-                        // If the new number of pages is greater than the current number of pages,
-                        // add new pages with empty content.
-                        for (int i = currentNumberOfPages; i < newNumberOfPages; i++) {
-                            currentPages.add(new Page(i + 1, ""));
-                        }
-                    } else if (newNumberOfPages < currentNumberOfPages) {
-                        // If the new number of pages is less than the current number of pages,
-                        // remove the last pages.
-                        for (int i = currentNumberOfPages - 1; i >= newNumberOfPages; i--) {
-                            currentPages.remove(i);
-                        }
+                    int numOfPages = Integer.parseInt(pagesField.getText());
+                    List<Page> pages = new ArrayList<>();
+                    for (int i = 0; i < numOfPages; i++) {
+                        pages.add(new Page(i + 1, "")); // You can replace "" with the actual content of the page
                     }
-                    // No need to do anything if the new number of pages is equal to the current number of pages.
+                    book.setPages(pages);
+
                 } catch (NumberFormatException e) {
                     System.out.println("Invalid number of pages. Please enter a valid integer.");
                     return;
