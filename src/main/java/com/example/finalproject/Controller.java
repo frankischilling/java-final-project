@@ -2,6 +2,7 @@
  thou who read this code may god have mercy on your soul
  i have no idea what i am doing
  i was forced to do this... im not a murderer i swear
+
 */
 
 package com.example.finalproject;
@@ -465,8 +466,8 @@ public class Controller {
         for (int i = 0; i < 100; i++) {
             pages.add(new Page(i + 1, "Content of page " + (i + 1)));
         }
-        // tester boook, phone, and chair
 
+        // tester boook, phone, and chair
         Electronics testElectronics = new Electronics("Test Electronics", 5, 499.99, "Test Brand", "Test Model ID", "Test Sub Group", "Test Color");
         testElectronics.setDescription("This is a test electronics item.");
         testElectronics.setWarrantyPeriod(1);
@@ -541,61 +542,49 @@ public class Controller {
             }
         });
 
-        inventoryListView.setCellFactory(new Callback<ListView<Item>, ListCell<Item>>() {
+        // Set up the cell factory for inventoryListView
+        inventoryListView.setCellFactory(param -> new ListCell<Item>() {
             @Override
-            public ListCell<Item> call(ListView<Item> param) {
-                return new ListCell<Item>() {
-                    @Override
-                    protected void updateItem(Item item, boolean empty) {
-                        super.updateItem(item, empty);
+            protected void updateItem(Item item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    VBox vBox = new VBox();
+                    vBox.setSpacing(10); // Set the spacing between the nodes
+                    vBox.setAlignment(Pos.CENTER); // Center the content in the VBox
 
-                        if (empty || item == null) {
-                            setText(null);
-                            setGraphic(null);
-                        } else {
-                            ImageView imageView = new ImageView();
-                            imageView.setFitHeight(100); // Set the height of the image
-                            imageView.setFitWidth(100); // Set the width of the image
-                            imageView.setImage(item.getImage());
+                    // Display the name, ID, and description for both minimized and detailed views
+                    Label nameLabel = new Label("Name: " + item.getName());
+                    Label idLabel = new Label("ID: " + item.getId());
+                    Label descriptionLabel = new Label("Description: " + item.getDescription());
+                    vBox.getChildren().addAll(nameLabel, idLabel, descriptionLabel);
 
-                            Label nameLabel = new Label(item.getName());
-                            Label quantityLabel = new Label("Quantity: " + item.getQuantity());
-                            Label priceLabel = new Label("Price: " + item.getPrice());
-                            Label descriptionLabel = new Label("Description: " + item.getDescription());
-
-                            VBox vBox = new VBox(nameLabel, quantityLabel, priceLabel, descriptionLabel);
-                            vBox.setSpacing(10); // Set the spacing between the nodes
-
-                            if (item instanceof Book book) {
-                                Label authorLabel = new Label("Author: " + book.getAuthor());
-                                Label publisherLabel = new Label("Publisher: " + book.getPublisher());
-                                Label pagesLabel = new Label("Pages: " + book.getPages().size());
-                                vBox.getChildren().addAll(authorLabel, publisherLabel, pagesLabel);
-                            } else if (item instanceof Electronics electronics) {
-                                Label brandLabel = new Label("Brand: " + electronics.getBrand());
-                                Label modelIdLabel = new Label("Model ID: " + electronics.getModelId());
-                                Label subGroupLabel = new Label("Sub Group: " + electronics.getSubGroup());
-                                Label colorLabel = new Label("Color: " + electronics.getColor());
-                                Label warrantyPeriodLabel = new Label("Warranty Period: " + electronics.getWarrantyPeriod());
-                                vBox.getChildren().addAll(brandLabel, modelIdLabel, subGroupLabel, colorLabel, warrantyPeriodLabel);
-                            } else if (item instanceof Furniture furniture) {
-                                Label materialLabel = new Label("Material: " + furniture.getMaterial());
-                                Label dimensionsLabel = new Label("Dimensions: " + furniture.getDimensions());
-                                vBox.getChildren().addAll(materialLabel, dimensionsLabel);
-                            }
-
-                            vBox.setSpacing(10); // Set the spacing between the nodes
-                            vBox.setAlignment(Pos.CENTER); // Center the content in the VBox
-
-                            HBox hBox = new HBox(imageView, vBox);
-                            hBox.setSpacing(10); // Set the spacing between the image and the text
-                            hBox.setAlignment(javafx.geometry.Pos.CENTER); // Center the content in the HBox
-
-                            setText(null);
-                            setGraphic(hBox);
+                    // In the detailed view, add additional type-specific information
+                    if (!isMinimized) {
+                        if (item instanceof Book book) {
+                            Label authorLabel = new Label("Author: " + book.getAuthor());
+                            Label publisherLabel = new Label("Publisher: " + book.getPublisher());
+                            Label pagesLabel = new Label("Pages: " + book.getPages().size());
+                            vBox.getChildren().addAll(authorLabel, publisherLabel, pagesLabel);
+                        } else if (item instanceof Electronics electronics) {
+                            Label brandLabel = new Label("Brand: " + electronics.getBrand());
+                            Label modelIdLabel = new Label("Model ID: " + electronics.getModelId());
+                            Label colorLabel = new Label("Color: " + electronics.getColor());
+                            Label warrantyPeriodLabel = new Label("Warranty Period: " + electronics.getWarrantyPeriod() + " year(s)");
+                            vBox.getChildren().addAll(brandLabel, modelIdLabel, colorLabel, warrantyPeriodLabel);
+                        } else if (item instanceof Furniture furniture) {
+                            Label materialLabel = new Label("Material: " + furniture.getMaterial());
+                            Label dimensionsLabel = new Label("Dimensions: " + furniture.getDimensions());
+                            vBox.getChildren().addAll(materialLabel, dimensionsLabel);
                         }
+                        // Add else if clauses for other item types if needed
                     }
-                };
+
+                    setText(null);
+                    setGraphic(vBox);
+                }
             }
         });
     }
@@ -612,5 +601,13 @@ public class Controller {
             }
             inventoryListView.refresh(); // Refresh the ListView to show the updated quantity
         }
+    }
+
+    private boolean isMinimized = false;
+
+    @FXML
+    protected void onMinimizeButtonClick() {
+        isMinimized = !isMinimized;
+        inventoryListView.refresh(); // Refresh the ListView to reflect the change
     }
 }

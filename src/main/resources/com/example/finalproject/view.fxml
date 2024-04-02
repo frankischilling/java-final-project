@@ -42,6 +42,7 @@
     <HBox spacing="10.0">
         <Button fx:id="addButton" onAction="#onAddButtonClick" text="Add" />
         <Button onAction="#onRemoveButtonClick" text="Remove" />
+        <Button fx:id="minimizeButton" onAction="#onMinimizeButtonClick" text="Minimize" />
     </HBox>
     <TextField fx:id="searchField" promptText="Search" />
     <ListView fx:id="inventoryListView" onMouseClicked="#onItemSelected" />
