@@ -543,7 +543,6 @@ public class Controller {
             }
         });
 
-        // Set up the cell factory for inventoryListView
         inventoryListView.setCellFactory(param -> new ListCell<Item>() {
             @Override
             protected void updateItem(Item item, boolean empty) {
@@ -556,12 +555,6 @@ public class Controller {
                     vBox.setSpacing(10); // Set the spacing between the nodes
                     vBox.setAlignment(Pos.CENTER); // Center the content in the VBox
 
-                    // Display the name, ID, and description for both minimized and detailed views
-                    Label nameLabel = new Label("Name: " + item.getName());
-                    Label idLabel = new Label("ID: " + item.getId());
-                    Label descriptionLabel = new Label("Description: " + item.getDescription());
-                    vBox.getChildren().addAll(nameLabel, idLabel, descriptionLabel);
-
                     // If the item has an image, display it
                     if (item.hasImage() && item.getImagePath() != null) {
                         ImageView imageView = new ImageView(new Image(item.getImagePath()));
@@ -570,6 +563,12 @@ public class Controller {
                         imageView.setPreserveRatio(true);
                         vBox.getChildren().add(imageView);
                     }
+
+                    // Display the name, ID, and description for both minimized and detailed views
+                    Label nameLabel = new Label("Name: " + item.getName());
+                    Label idLabel = new Label("ID: " + item.getId());
+                    Label descriptionLabel = new Label("Description: " + item.getDescription());
+                    vBox.getChildren().addAll(nameLabel, idLabel, descriptionLabel);
 
                     // In the detailed view, add additional type-specific information
                     if (!isMinimized) {
