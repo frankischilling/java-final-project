@@ -59,11 +59,7 @@ public class Controller {
 
     // Add the @FXML annotation to the addButton field
     public void refreshListView() {
-        // Clear the ListView
-        inventoryListView.getItems().clear();
-
-        // Add all items back to the ListView
-        inventoryListView.getItems().addAll(allItems);
+        inventoryListView.setItems(allItems); // Set the items of the ListView to allItems
 
         // Sort the items by the numerical part of their ID
         inventoryListView.getItems().sort((item1, item2) -> {
@@ -397,17 +393,17 @@ public class Controller {
                     return;
             }
 
-            if (item != null) { // Add the item to the list view
-                inventoryListView.getItems().add(item);
-                inventoryListView.getItems().sort((item1, item2) -> {
-                    int id1 = Integer.parseInt(item1.getId().substring(4)); // Extract the numerical part of the ID
-                    int id2 = Integer.parseInt(item2.getId().substring(4)); // Extract the numerical part of the ID
-                    return Integer.compare(id1, id2); // Compare the numerical parts
+            if (item != null) {
+                allItems.add(item); // Add the item to the ObservableList
+                allItems.sort((item1, item2) -> {
+                    int id1 = Integer.parseInt(item1.getId().substring(4));
+                    int id2 = Integer.parseInt(item2.getId().substring(4));
+                    return Integer.compare(id1, id2);
                 });
-                refreshListView(); // Refresh the ListView after adding the item
+                refreshListView();
             }
         } catch (NumberFormatException e) {
-            showAlert("An error occurred: " + e.getMessage());
+            showAlert("Invalid input. Please enter valid values.");
         }
     }
 

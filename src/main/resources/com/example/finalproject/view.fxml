@@ -40,7 +40,7 @@
     <TextField fx:id="warrantyPeriodField" promptText="Warranty Period" />
     <TextField fx:id="dimensionsField" promptText="Dimensions" />
     <HBox spacing="10.0">
-        <Button onAction="#onAddButtonClick" text="Add" />
+        <Button fx:id="addButton" onAction="#onAddButtonClick" text="Add" />
         <Button onAction="#onRemoveButtonClick" text="Remove" />
     </HBox>
     <TextField fx:id="searchField" promptText="Search" />
