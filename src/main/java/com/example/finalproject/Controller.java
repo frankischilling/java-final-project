@@ -42,7 +42,7 @@ public class Controller {
     private TextField nameField, quantityField, priceField, extraField, colorField;
     // Add the @FXML annotation to the typeComboBox field
     @FXML
-    private ComboBox<String> typeComboBox;
+    private ComboBox<String> typeComboBox, sortComboBox;
     // Add the @FXML annotation to the modelIdField field
     @FXML
     private TextField modelIdField;
@@ -56,8 +56,36 @@ public class Controller {
     private TextField descriptionField, publisherField, warrantyPeriodField, dimensionsField;
     @FXML
     private TextField searchField;
-
     private final ObservableList<Item> allItems = FXCollections.observableArrayList();
+
+    private void sortItems() {
+        String selectedOption = sortComboBox.getValue();
+        switch (selectedOption) {
+            case "ID":
+                allItems.sort((item1, item2) -> {
+                    int id1 = Integer.parseInt(item1.getId().substring(4));
+                    int id2 = Integer.parseInt(item2.getId().substring(4));
+                    return Integer.compare(id1, id2);
+                });
+                break;
+            case "Category":
+                allItems.sort((item1, item2) -> item1.getType().compareTo(item2.getType()));
+                break;
+            case "Subcategory":
+                allItems.sort((item1, item2) -> {
+                    if (item1 instanceof Book book1 && item2 instanceof Book book2) {
+                        return book1.getSubGroup().compareTo(book2.getSubGroup());
+                    } else if (item1 instanceof Electronics electronics1 && item2 instanceof Electronics electronics2) {
+                        return electronics1.getSubGroup().compareTo(electronics2.getSubGroup());
+                    } else if (item1 instanceof Furniture furniture1 && item2 instanceof Furniture furniture2) {
+                        return furniture1.getSubGroup().compareTo(furniture2.getSubGroup());
+                    }
+                    return 0;
+                });
+                break;
+        }
+        inventoryListView.refresh();
+    }
 
     // Add the @FXML annotation to the addButton field
     public void refreshListView() {
@@ -152,8 +180,6 @@ public class Controller {
                 warrantyPeriodField.setVisible(false);
                 dimensionsField.setManaged(false);
                 dimensionsField.setVisible(false);
-
-
                 break;
             // Enable the extraField, colorField, modelIdField and subGroupComboBox
             case "Electronics":
@@ -462,6 +488,7 @@ public class Controller {
 
     @FXML
     public void initialize() {
+        sortComboBox.setOnAction(event -> sortItems());
         //add tester book
         List<Page> pages = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
@@ -481,10 +508,16 @@ public class Controller {
         testBook.setDescription("This is a test book.");
         testBook.setPublisher("Test Publisher");
 
+        // add a second book item to test sort by catorgory
+        Book testBook2 = new Book("Test Book 2", 10, 59.99, "Test Author", "Non-fiction", pages);
+        testBook2.setDescription("This is a test book.");
+        testBook2.setPublisher("Test Publisher");
+
         // Add the test items
         inventoryListView.getItems().add(testBook);
         inventoryListView.getItems().add(testElectronics);
         inventoryListView.getItems().add(testFurniture);
+        inventoryListView.getItems().add(testBook2);
 
         // Sort the items by the numerical part of their ID
         inventoryListView.getItems().sort((item1, item2) -> {
@@ -576,22 +609,24 @@ public class Controller {
                             Label authorLabel = new Label("Author: " + book.getAuthor());
                             Label publisherLabel = new Label("Publisher: " + book.getPublisher());
                             Label pagesLabel = new Label("Pages: " + book.getPages().size());
-                            vBox.getChildren().addAll(authorLabel, publisherLabel, pagesLabel);
+                            Label subGroupLabel = new Label("Subgroup: " + book.getSubGroup());
+                            vBox.getChildren().addAll(authorLabel, publisherLabel, pagesLabel, subGroupLabel);
                         } else if (item instanceof Electronics electronics) {
                             Label brandLabel = new Label("Brand: " + electronics.getBrand());
                             Label modelIdLabel = new Label("Model ID: " + electronics.getModelId());
                             Label colorLabel = new Label("Color: " + electronics.getColor());
                             Label warrantyPeriodLabel = new Label("Warranty Period: " + electronics.getWarrantyPeriod() + " year(s)");
-                            vBox.getChildren().addAll(brandLabel, modelIdLabel, colorLabel, warrantyPeriodLabel);
+                            Label subGroupLabel = new Label("Subgroup: " + electronics.getSubGroup());
+                            vBox.getChildren().addAll(brandLabel, modelIdLabel, colorLabel, warrantyPeriodLabel, subGroupLabel);
                         } else if (item instanceof Furniture furniture) {
                             Label materialLabel = new Label("Material: " + furniture.getMaterial());
                             Label dimensionsLabel = new Label("Dimensions: " + furniture.getDimensions());
-                            vBox.getChildren().addAll(materialLabel, dimensionsLabel);
+                            Label subGroupLabel = new Label("Subgroup: " + furniture.getSubGroup());
+                            vBox.getChildren().addAll(materialLabel, dimensionsLabel, subGroupLabel);
                         }
                         // Add else if clauses for other item types if needed
                     }
 
-                    setText(null);
                     setGraphic(vBox);
                 }
             }

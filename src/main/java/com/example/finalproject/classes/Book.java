@@ -56,7 +56,7 @@ public class Book extends Item {
     }
     @Override
     public String toString() {
-        return super.toString() + ", Author: " + author + ", Publisher: " + publisher + ", Sub Group: " + subGroup + ", Pages: " + pages.size();
+        return "ID: " + getId() + ", Item: " + getName() + ", Quantity: " + getQuantity() + ", Price: " + getPrice() + ", Description: " + getDescription() + ", Type: " + getType() + ", Subgroup: " + getSubGroup() + (hasImage() ? " (Image Attached)" : "");
     }
 
     public List<Page> getPages() {

@@ -39,6 +39,15 @@
     <TextField fx:id="publisherField" promptText="Publisher" />
     <TextField fx:id="warrantyPeriodField" promptText="Warranty Period" />
     <TextField fx:id="dimensionsField" promptText="Dimensions" />
+    <ComboBox fx:id="sortComboBox" maxWidth="Infinity">
+        <items>
+            <FXCollections fx:factory="observableArrayList">
+                <String fx:value="ID" />
+                <String fx:value="Category" />
+                <String fx:value="Subcategory" />
+            </FXCollections>
+        </items>
+    </ComboBox>
     <HBox spacing="10.0">
         <Button fx:id="addButton" onAction="#onAddButtonClick" text="Add" />
         <Button onAction="#onRemoveButtonClick" text="Remove" />
