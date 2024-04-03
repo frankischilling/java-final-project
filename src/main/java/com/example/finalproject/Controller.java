@@ -7,30 +7,25 @@
 
 package com.example.finalproject;
 
-import com.example.finalproject.classes.*;
 import com.example.finalproject.classes.Book;
 import com.example.finalproject.classes.Electronics;
 import com.example.finalproject.classes.Furniture;
-
+import com.example.finalproject.classes.Page;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.collections.FXCollections;
-import javafx.util.Callback;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class Controller {
@@ -62,31 +57,29 @@ public class Controller {
         String selectedOption = sortComboBox.getValue();
         switch (selectedOption) {
             case "ID":
-                allItems.sort((item1, item2) -> {
-                    int id1 = Integer.parseInt(item1.getId().substring(4));
-                    int id2 = Integer.parseInt(item2.getId().substring(4));
-                    return Integer.compare(id1, id2);
-                });
+                allItems.sort(Comparator.comparing(Item::getId));
                 break;
             case "Category":
-                allItems.sort((item1, item2) -> item1.getType().compareTo(item2.getType()));
+                allItems.sort(Comparator.comparing(item -> item.getClass().getSimpleName()));
                 break;
             case "Subcategory":
-                allItems.sort((item1, item2) -> {
-                    if (item1 instanceof Book book1 && item2 instanceof Book book2) {
-                        return book1.getSubGroup().compareTo(book2.getSubGroup());
-                    } else if (item1 instanceof Electronics electronics1 && item2 instanceof Electronics electronics2) {
-                        return electronics1.getSubGroup().compareTo(electronics2.getSubGroup());
-                    } else if (item1 instanceof Furniture furniture1 && item2 instanceof Furniture furniture2) {
-                        return furniture1.getSubGroup().compareTo(furniture2.getSubGroup());
+                allItems.sort(Comparator.comparing(item -> {
+                    if (item instanceof Book) {
+                        return ((Book) item).getSubGroup();
+                    } else if (item instanceof Electronics) {
+                        return ((Electronics) item).getSubGroup();
+                    } else if (item instanceof Furniture) {
+                        return ((Furniture) item).getSubGroup();
+                    } else {
+                        return "";
                     }
-                    return 0;
-                });
+                }));
                 break;
+            // Add more cases for other sorting options
         }
+        inventoryListView.setItems(allItems);
         inventoryListView.refresh();
     }
-
     // Add the @FXML annotation to the addButton field
     public void refreshListView() {
         inventoryListView.setItems(allItems); // Set the items of the ListView to allItems
@@ -489,6 +482,7 @@ public class Controller {
     @FXML
     public void initialize() {
         sortComboBox.setOnAction(event -> sortItems());
+
         //add tester book
         List<Page> pages = new ArrayList<>();
         for (int i = 0; i < 100; i++) {

@@ -2,9 +2,7 @@ package com.example.finalproject.classes;
 
 import com.example.finalproject.Item;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Book extends Item {
     // new field
