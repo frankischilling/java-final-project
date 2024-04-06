@@ -67,7 +67,7 @@ This will launch the "Inventory Management System" GUI where you can manage and 
 
 ### Editing Items
 
-- After selecting an item, click the "Edit" button to modify its details. You can change any information except for the item's ID.
+- After selecting an item, double click the the item to modify its details. You can change any information except for the item's ID.
 
 
 ## Authors
