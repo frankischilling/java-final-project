@@ -80,8 +80,7 @@ This project is licensed under the GPL-3.0 License - see the [LICENSE.md](LICENS
 
 ## Acknowledgments
 
-- Hat tip to anyone whose code was used
 - getting this done in time for the class 
-- etc
+- me (frank)
 
 ---
