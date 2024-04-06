@@ -2,7 +2,7 @@
 
 # Java Final Project - Inventory Management System
 
-A brief description of what this project does and who it's for. For example, "A JavaFX-based Inventory Management System designed to manage and categorize different types of items including books, electronics, and furniture."
+A JavaFX-based Inventory Management System designed to manage and categorize different types of items including books, electronics, and furniture.
 
 ## Getting Started
 
