@@ -591,11 +591,12 @@ public class Controller {
                         vBox.getChildren().add(imageView);
                     }
 
-                    // Display the name, ID, and description for both minimized and detailed views
+                    // Display the name, ID, quantity, and description for both minimized and detailed views
                     Label nameLabel = new Label("Name: " + item.getName());
                     Label idLabel = new Label("ID: " + item.getId());
+                    Label quantityLabel = new Label("Quantity: " + item.getQuantity()); // New label for quantity
                     Label descriptionLabel = new Label("Description: " + item.getDescription());
-                    vBox.getChildren().addAll(nameLabel, idLabel, descriptionLabel);
+                    vBox.getChildren().addAll(nameLabel, idLabel, quantityLabel, descriptionLabel); // Add the quantity label to the VBox
 
                     // In the detailed view, add additional type-specific information
                     if (!isMinimized) {
